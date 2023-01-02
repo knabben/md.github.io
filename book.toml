@@ -1,0 +1,6 @@
+[book]
+authors = ["Amim Knabben"]
+language = "en"
+multilingual = false
+src = "src"
+title = "RS101"
