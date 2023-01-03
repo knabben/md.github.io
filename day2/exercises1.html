@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Day 3 - Rust 101/102</title>
+        <title>Exercises part I - Rust 101/102</title>
 
 
         <!-- Custom HTML head -->
@@ -12,21 +12,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -34,7 +34,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script>
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="init.html">🦀</a></li><li class="chapter-item expanded "><a href="day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="day_3.html" class="active"><strong aria-hidden="true">3.</strong> Day 3</a></li><li class="chapter-item expanded "><a href="day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">🦀</a></li><li class="chapter-item expanded "><a href="../day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day2/exercises1.html" class="active"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li class="chapter-item expanded "><a href="../day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -112,7 +112,7 @@
                     <h1 class="menu-title">Rust 101/102</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
 
@@ -141,17 +141,178 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h3 id="day-3---142023"><a class="header" href="#day-3---142023">Day 3 - 1/4/2023</a></h3>
+                        <h2 id="exercises-day-2---part-i"><a class="header" href="#exercises-day-2---part-i">Exercises day 2 - Part I</a></h2>
+<ul>
+<li>Simple struct which tracks health statistics.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">struct User {
+    name: String,
+    age: u32,
+    weight: f32,
+}
+
+impl User {
+    pub fn new(name: String, age: u32, weight: f32) -&gt; Self {
+        return User{name, age, weight}
+    }
+
+    pub fn name(&amp;self) -&gt; &amp;str {
+        &amp;self.name
+    }
+
+    pub fn age(&amp;self) -&gt; u32 {
+        self.age
+    }
+
+    pub fn weight(&amp;self) -&gt; f32 {
+        self.weight
+    }
+
+    pub fn set_age(&amp;mut self, new_age: u32) {
+        self.age = new_age
+    }
+
+    pub fn set_weight(&amp;mut self, new_weight: f32) {
+        self.weight = new_weight
+    }
+}
+
+fn main() {
+    let bob = User::new(String::from(&quot;Bob&quot;), 32, 155.2);
+    println!(&quot;I'm {} and my age is {}&quot;, bob.name(), bob.age());
+}
+
+#[test]
+fn test_weight() {
+    let bob = User::new(String::from(&quot;Bob&quot;), 32, 155.2);
+    assert_eq!(bob.weight(), 155.2);
+}
+
+#[test]
+fn test_set_age() {
+    let mut bob = User::new(String::from(&quot;Bob&quot;), 33, 155.2);
+    assert_eq!(bob.age(), 32);
+    bob.set_age(33);
+    assert_eq!(bob.age(), 33);
+}</code></pre></pre>
+<ul>
+<li>Multiple structs and enums for a drawing library.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::ops::Add;
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct Point {
+    // add fields
+    x :i32,
+    y :i32,
+}
+
+impl Add for Point {
+    type Output = Self;
+
+    fn add(self, other: Self) -&gt; Self {
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+impl Point {
+    fn new(x :i32, y :i32) -&gt; Point {
+        Point{x, y}
+    }
+    fn magnitude(&amp;self) -&gt; f64 {
+        f64::sqrt( (i32::pow(self.x, 2) + i32::pow(self.y, 2)).into())
+    }
+
+    fn dist(&amp;self, p1 :Point) -&gt; f64{
+        f64::sqrt( (i32::pow(p1.x - self.x, 2) + i32::pow(p1.y - self.y, 2)).into())
+    }
+}
+
+pub struct Polygon {
+    points :Vec&lt;Point&gt;
+}
+
+impl Polygon {
+    fn new() -&gt; Polygon {
+        Polygon{ points: vec![]}
+    }
+
+    fn add_point(&amp;mut self, p :Point) {
+        self.points.push(p)
+    }
+    fn left_most_point(&amp;self) -&gt; Option&lt;&amp;Point&gt; {
+       self.points.first()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn round_two_digits(x: f64) -&gt; f64 {
+        (x * 100.0).round() / 100.0
+    }
+
+    #[test]
+    fn test_point_magnitude() {
+        let p1 = Point::new(12, 13);
+        assert_eq!(round_two_digits(p1.magnitude()), 17.69);
+    }
+
+    #[test]
+    fn test_point_dist() {
+        let p1 = Point::new(10, 10);
+        let p2 = Point::new(14, 13);
+        assert_eq!(round_two_digits(p1.dist(p2)), 5.00);
+    }
+
+    #[test]
+    fn test_point_add() {
+        let p1 = Point::new(16, 16);
+        let p2 = p1 + Point::new(-4, 3);
+        assert_eq!(p2, Point::new(12, 19));
+    }
+
+    #[test]
+    fn test_polygon_left_most_point() {
+        let p1 = Point::new(12, 13);
+        let p2 = Point::new(16, 16);
+
+        let mut poly = Polygon::new();
+        poly.add_point(p1);
+        poly.add_point(p2);
+        assert_eq!(poly.left_most_point(), Some(&amp;p1));
+    }
+
+    #[test]
+    fn test_polygon_iter() {
+        let p1 = Point::new(12, 13);
+        let p2 = Point::new(16, 16);
+
+        let mut poly = Polygon::new();
+        poly.add_point(p1);
+        poly.add_point(p2);
+
+        let points = poly.points.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;();
+        assert_eq!(points, vec![Point::new(12, 13), Point::new(16, 16)]);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="day2/exercises2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../day_2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="day_4.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../day2/exercises2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -161,11 +322,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="day2/exercises2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../day_2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="day_4.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../day2/exercises2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -180,13 +341,13 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
