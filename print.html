@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="init.html">🦀</a></li><li class="chapter-item expanded "><a href="day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycles</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="init.html">🦀</a></li><li class="chapter-item expanded "><a href="day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,9 +143,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-rust-annotations"><a class="header" href="#-rust-annotations">🦀 Rust annotations</a></h1>
-<p>This document is following the days and research mainly 
-from the <a href="https://google.github.io/comprehensive-rust/">Comprehensive Rust</a> book, the tutorial
-consist of 4 days passing in different topics of the language</p>
+<p>This document is following the days and research mainly from the <a href="https://google.github.io/comprehensive-rust/">Comprehensive Rust</a> book.
+The tutorial consist of 4 days passing in different topics of the language</p>
 <h3 id="support-related-material"><a class="header" href="#support-related-material">Support related material</a></h3>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/">OS Rust book</a></li>
@@ -385,21 +384,144 @@ fn main() {
     pretty_print(&amp;transposed);
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h3 id="variables-1"><a class="header" href="#variables-1">Variables</a></h3>
-<p>definition of variables, immutability
-type inference
-static and constant</p>
-<p>Scopes and shadowing</p>
-<p>Move
-Copying and cloing
-Borrowing</p>
-<p>Lifetimes</p>
-<p>Exercises</p>
-<p>Designing a library</p>
+<p>By default, variables are immutable, need to use <code>mut</code>. Static typing 
+allow type inference, do not pass the type <code>:&lt;type&gt;</code>, and let rust infer it.</p>
+<p><code>const</code> use the compile-time constants.</p>
+<h4 id="shadowing"><a class="header" href="#shadowing">Shadowing</a></h4>
+<p>Declare a variable with the same name as a previous variable.
+The first variable is shadowed by the second on this case.</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = 5;
+    let x = x + 1;
+
+    {
+        let x = 100;
+        println!(&quot;inner scope: {x}&quot;);
+        let x = true;
+        println!(&quot;shadowed in inner scope: {x}&quot;);
+    }
+    
+    println!(&quot;outer scope {x}&quot;);
+}</code></pre></pre>
+<h3 id="memory-management"><a class="header" href="#memory-management">Memory management</a></h3>
+<p>Rust offers full control AND safety via compile time enforcement of correct memory management.
+Explicit Ownership concept.</p>
+<p><em>Refer to mem management section from the tutorial.</em></p>
+<h2 id="ownership"><a class="header" href="#ownership">Ownership</a></h2>
+<p>Binding have a scope where they are valid.
+A set of rules that govern how a Rust program manages memory.
+All programs have to manage the way they use memory while running.
+Memory is managed through a system of ownership with a set of rules that the compiler checks.</p>
 <ul>
-<li><a href="day1/exercises/day-1/book-library.html">Designing a Library</a></li>
-<li><a href="day1/exercises/day-1/iterators-and-ownership.html">Iterators and Ownership</a></li>
+<li>Each value has an <em>owner</em></li>
+<li>There can only be one owner at a time.</li>
+<li>When the owner goes out of scope, the value is dropped.</li>
 </ul>
-<h1 id=""><a class="header" href="#"></a></h1>
+<h3 id="move"><a class="header" href="#move">Move</a></h3>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let s1 = String::from(&quot;hello&quot;);
+    let s2: String = s1;
+}</code></pre></pre>
+<p>Data is moved from one s1 and s1 is not accessible anymore - 
+This is a problem: when s2 and s1 go out of scope, they will both try to free the same memory. This is known as a double free error and is one of the memory safety bugs we mentioned previously. Freeing memory twice can lead to memory corruption, which can potentially lead to security vulnerabilities.
+Rust doesn’t need to free anything when s1 goes out of scope. when accessing it raises an error:</p>
+<p><code>value is borrowed here after move.</code></p>
+<p>Transfer ownership happens on function parameters as well.
+Another way to interect is via <code>s1.close()</code>.</p>
+<p>Struct must use <code>#[derive(Copy, Clone, Debug)]</code> annotation.</p>
+<p>For functions is not allowed to use s after the function ownership taken</p>
+<pre><pre class="playground"><code class="language-rust">fn takes_ownership(s :String) {
+    println!(&quot;on function: {}&quot;, s)
+}
+
+fn main() {
+    let s = String::from(&quot;hello&quot;);  // s comes into scope
+
+    takes_ownership(s);             // s's value moves into the function...
+    println!(&quot;outside function: {}&quot;, s)
+}</code></pre></pre>
+<h3 id="borrowing-and-lifetimes"><a class="header" href="#borrowing-and-lifetimes">Borrowing and lifetimes</a></h3>
+<p>Passing references (<code>&amp;</code>) makes the data still being owner by some other variable.
+<code>function(&amp;s1)</code>, allows to refer the value of s1 but do not own it. 
+The caller retains ownership of the inputs.</p>
+<pre><pre class="playground"><code class="language-rust">
+fn main() {
+    let p1 = String::from(&quot;hello&quot;);
+    let f1;
+    
+    {
+        let p2 :String = String::from(&quot;hello 2&quot;);
+        f1 = function(&amp;p1.as_str(), &amp;p2.as_str());
+    }
+    
+    println!(&quot;{f1} {p1}&quot;);
+}
+
+// returns with p2 lifetime if p2 has 'a.
+// forcing the lifetime for the p1 variable allows the
+// return.
+fn function&lt;'a&gt;(p1 :&amp;'a str, p2 :&amp;str) -&gt; &amp;'a str{ ;; 
+    println!(&quot;function {p1} {p2}&quot;);
+    return p1
+}</code></pre></pre>
+<p>These borrowed values has a <code>lifetime</code> -  ensure that references are valid as long as we need them to be.
+<code>&amp;'a String</code> means “a borrowed String which is valid for at least the lifetime a`</p>
+<p>Reference:</p>
+<p>https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html?highlight=lifetime#lifetime-elision</p>
+<h3 id="exercises-1"><a class="header" href="#exercises-1">Exercises</a></h3>
+<ul>
+<li>Designing a library</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">impl Library {
+    fn new(books :Vec&lt;Book&gt;) -&gt; Library {
+        Library{ books }
+    }
+
+    fn len(&amp;self) -&gt; usize {
+        self.books.len()
+    }
+
+    fn is_empty(&amp;self) -&gt; bool {
+        self.books.is_empty()
+    }
+
+    fn add_book(&amp;mut self, book: Book) {
+        self.books.push(book)
+    }
+
+    fn print_books(&amp;self) {
+        for b in self.books.iter() {
+            println!(&quot;{}&quot;, b)
+        }
+    }
+
+    fn oldest_book(&amp;mut self) -&gt; Option&lt;&amp;Book&gt; {
+        self.books.sort_by(|a, b| a.year.cmp(&amp;b.year));
+        self.books.first()
+    }
+}
+
+fn main() {
+    // This shows the desired behavior. Uncomment the code below and
+    // implement the missing methods. You will need to update the
+    // method signatures, including the &quot;self&quot; parameter!
+    let books :Vec&lt;Book&gt; = vec!();
+    let mut library = Library::new(books);
+
+    println!(&quot;Our library is empty: {}&quot;, library.is_empty());
+
+    library.add_book(Book::new(&quot;Lord of the Rings&quot;, 1954));
+    library.add_book(Book::new(&quot;Alice's Adventures in Wonderland&quot;, 1865));
+
+    library.print_books();
+
+    match library.oldest_book() {
+        Some(book) =&gt; println!(&quot;My oldest book is {book}&quot;),
+        None =&gt; println!(&quot;My library is empty!&quot;),
+    }
+
+   println!(&quot;Our library has {} books&quot;, library.len());
+}</code></pre></pre>
 
                     </main>
 
