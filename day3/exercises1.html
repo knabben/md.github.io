@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">🦀</a></li><li class="chapter-item expanded "><a href="../day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day2/exercises1.html" class="active"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">🦀</a></li><li class="chapter-item expanded "><a href="../day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day3/exercises1.html" class="active"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -141,177 +141,128 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="exercises-day-2---part-i"><a class="header" href="#exercises-day-2---part-i">Exercises day 2 - Part I</a></h2>
-<ul>
-<li>Simple struct which tracks health statistics.</li>
+                        <ul>
+<li>simple gui</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust">struct User {
-    name: String,
-    age: u32,
-    weight: f32,
-}
+<pre><pre class="playground"><code class="language-rust">use std::fmt::Write;
 
-impl User {
-    pub fn new(name: String, age: u32, weight: f32) -&gt; Self {
-        return User{name, age, weight}
-    }
+pub trait Widget {
+    /// Natural width of `self`.
+    fn width(&amp;self) -&gt; usize;
 
-    pub fn name(&amp;self) -&gt; &amp;str {
-        &amp;self.name
-    }
+    /// Draw the widget into a buffer.
+    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write);
 
-    pub fn age(&amp;self) -&gt; u32 {
-        self.age
-    }
-
-    pub fn weight(&amp;self) -&gt; f32 {
-        self.weight
-    }
-
-    pub fn set_age(&amp;mut self, new_age: u32) {
-        self.age = new_age
-    }
-
-    pub fn set_weight(&amp;mut self, new_weight: f32) {
-        self.weight = new_weight
+    /// Draw the widget on standard output.
+    fn draw(&amp;self) {
+        let mut buffer = String::new();
+        self.draw_into(&amp;mut buffer);
+        println!(&quot;{}&quot;, &amp;buffer);
     }
 }
 
-fn main() {
-    let bob = User::new(String::from(&quot;Bob&quot;), 32, 155.2);
-    println!(&quot;I'm {} and my age is {}&quot;, bob.name(), bob.age());
+pub struct Label {
+    label: String,
 }
 
-#[test]
-fn test_weight() {
-    let bob = User::new(String::from(&quot;Bob&quot;), 32, 155.2);
-    assert_eq!(bob.weight(), 155.2);
-}
-
-#[test]
-fn test_set_age() {
-    let mut bob = User::new(String::from(&quot;Bob&quot;), 33, 155.2);
-    assert_eq!(bob.age(), 32);
-    bob.set_age(33);
-    assert_eq!(bob.age(), 33);
-}</code></pre></pre>
-<ul>
-<li>Multiple structs and enums for a drawing library.</li>
-</ul>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use std::ops::Add;
-
-#[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Point {
-    x :i32,
-    y :i32,
-}
-
-impl Add for Point {
-    type Output = Self;
-
-    fn add(self, other: Self) -&gt; Self {
-        Self {
-            x: self.x + other.x,
-            y: self.y + other.y,
+impl Label {
+    fn new(label: &amp;str) -&gt; Label {
+        Label {
+            label: label.to_owned(),
         }
     }
 }
 
-impl Point {
-    fn new(x :i32, y :i32) -&gt; Point {
-        Point{x, y}
-    }
-    fn magnitude(&amp;self) -&gt; f64 {
-        f64::sqrt( (i32::pow(self.x, 2) + i32::pow(self.y, 2)).into())
-    }
+pub struct Button {
+    label: Label,
+    callback: Box&lt;dyn FnMut()&gt;,
+}
 
-    fn dist(&amp;self, p1 :Point) -&gt; f64{
-        f64::sqrt( (i32::pow(p1.x - self.x, 2) + i32::pow(p1.y - self.y, 2)).into())
+impl Button {
+    fn new(label: &amp;str, callback: Box&lt;dyn FnMut()&gt;) -&gt; Button {
+        Button {
+            label: Label::new(label),
+            callback,
+        }
     }
 }
 
-pub struct Polygon {
-    points :Vec&lt;Point&gt;
+pub struct Window {
+    title: String,
+    widgets: Vec&lt;Box&lt;dyn Widget&gt;&gt;,
 }
 
-impl Polygon {
-    fn new() -&gt; Polygon {
-        Polygon{ points: vec![]}
+impl Window {
+    fn new(title: &amp;str) -&gt; Window {
+        Window {
+            title: title.to_owned(),
+            widgets: Vec::new(),
+        }
     }
 
-    fn add_point(&amp;mut self, p :Point) {
-        self.points.push(p)
+    fn add_widget(&amp;mut self, widget: Box&lt;dyn Widget&gt;) {
+        self.widgets.push(widget);
     }
-    fn left_most_point(&amp;self) -&gt; Option&lt;&amp;Point&gt; {
-       self.points.first()
+}
+
+
+impl Widget for Label {
+    fn width(&amp;self) -&gt; usize {
+        unimplemented!()
+    }
+
+    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write) {
+        buffer.write_str(self.label.as_str()).unwrap();
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn round_two_digits(x: f64) -&gt; f64 {
-        (x * 100.0).round() / 100.0
+impl Widget for Button {
+    fn width(&amp;self) -&gt; usize {
+        unimplemented!()
     }
 
-    #[test]
-    fn test_point_magnitude() {
-        let p1 = Point::new(12, 13);
-        assert_eq!(round_two_digits(p1.magnitude()), 17.69);
-    }
-
-    #[test]
-    fn test_point_dist() {
-        let p1 = Point::new(10, 10);
-        let p2 = Point::new(14, 13);
-        assert_eq!(round_two_digits(p1.dist(p2)), 5.00);
-    }
-
-    #[test]
-    fn test_point_add() {
-        let p1 = Point::new(16, 16);
-        let p2 = p1 + Point::new(-4, 3);
-        assert_eq!(p2, Point::new(12, 19));
-    }
-
-    #[test]
-    fn test_polygon_left_most_point() {
-        let p1 = Point::new(12, 13);
-        let p2 = Point::new(16, 16);
-
-        let mut poly = Polygon::new();
-        poly.add_point(p1);
-        poly.add_point(p2);
-        assert_eq!(poly.left_most_point(), Some(&amp;p1));
-    }
-
-    #[test]
-    fn test_polygon_iter() {
-        let p1 = Point::new(12, 13);
-        let p2 = Point::new(16, 16);
-
-        let mut poly = Polygon::new();
-        poly.add_point(p1);
-        poly.add_point(p2);
-
-        let points = poly.points.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;();
-        assert_eq!(points, vec![Point::new(12, 13), Point::new(16, 16)]);
+    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write) {
+        buffer.write_str(&quot;\n|&quot;).unwrap();
+        buffer.write_str(&amp;self.label.label.as_str()).unwrap();
+        buffer.write_str(&quot;|\n&quot;).unwrap();
     }
 }
-<span class="boring">}</span></code></pre></pre>
+
+impl Widget for Window {
+    fn width(&amp;self) -&gt; usize {
+        10
+    }
+
+    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write) {
+        buffer.write_str(&quot;\n--------------\n&quot;).unwrap();
+        buffer.write_str(self.title.as_str()).unwrap();
+        buffer.write_str(&quot;\n--------------\n&quot;).unwrap();
+        for w in &amp;self.widgets {
+            w.draw_into(buffer)
+        }
+    }
+}
+
+fn main() {
+    let mut window = Window::new(&quot;Rust GUI Demo 1.23&quot;);
+
+    window.add_widget(Box::new(Label::new(&quot;This is a small text GUI demo.&quot;)));
+    window.add_widget(Box::new(Button::new(
+        &quot;Click me!&quot;,
+        Box::new(|| println!(&quot;You clicked the button!&quot;)),
+    )));
+
+    window.draw();</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../day_2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../day_3.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../day2/exercises2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../day3/exercises2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -321,11 +272,11 @@ mod tests {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../day_2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../day_3.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../day2/exercises2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../day3/exercises2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

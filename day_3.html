@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="init.html">🦀</a></li><li class="chapter-item expanded "><a href="day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="day_3.html" class="active"><strong aria-hidden="true">3.</strong> Day 3</a></li><li class="chapter-item expanded "><a href="day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="init.html">🦀</a></li><li class="chapter-item expanded "><a href="day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="day_3.html" class="active"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,6 +142,124 @@
                 <div id="content" class="content">
                     <main>
                         <h3 id="day-3---142023"><a class="header" href="#day-3---142023">Day 3 - 1/4/2023</a></h3>
+<h2 id="traits"><a class="header" href="#traits">Traits</a></h2>
+<p>Traits are like interfaces and define a required amount of methods your struct needs to have.</p>
+<pre><pre class="playground"><code class="language-rust edditable">fn main() {
+    trait Cars {
+        fn model(self) -&gt; String;
+        fn board(&amp;self, number: i32) {
+            println!(&quot;ABC{number}&quot;)
+        }
+    }
+
+    struct Hundai {
+        model :String
+    }
+
+    impl Cars for Hundai {
+        fn model(self) -&gt; String {
+            self.model
+        }
+    }
+}</code></pre></pre>
+<p>Traits can be derived and implement default behaviors</p>
+<ul>
+<li><code>Iterator</code> and <code>IntoIterator</code> for loops.</li>
+<li><code>From</code> and <code>Into</code> to convert values.</li>
+<li><code>Read</code> and <code>Write</code> for IO</li>
+<li><code>Add, Mul</code> for operator overloading</li>
+<li><code>Drop</code> for destructors</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">trait Cars {
+    fn new() -&gt; Self;
+}
+
+struct Hundai {
+    model :String
+}
+
+impl Cars for Hundai {
+    fn new() -&gt; Self {
+        Hundai{model: String::from(&quot;h&quot;) }
+    }
+}
+
+impl Drop for Hundai {
+    fn drop(&amp;mut self) {
+        println!(&quot;dropping here&quot;);
+    }
+}
+
+fn main() {
+    {
+        let h = Hundai::new();
+        println!(&quot;{}&quot;, h.model);
+    }
+}</code></pre></pre>
+<h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
+<p>Are used to create definitions for items like function sign or structs, which
+we can then use with many different concrete data types.</p>
+<p>Placing generics in signature allow reusability.
+Different types are allowed in the same struct</p>
+<pre><pre class="playground"><code class="language-rust">struct Point&lt;T, U&gt; {
+    x: T,
+    y: U,
+}
+
+fn first&lt;T&gt;(list: &amp;[T]) -&gt; &amp;T {
+    &amp;list[0]
+}
+
+fn main() {
+    println!(&quot;{}&quot;, first(&amp;vec![1,2,3,5]));
+    println!(&quot;{}&quot;, first(&amp;vec![&quot;a&quot;, &quot;b&quot;]));
+    let p = Point{x:5, y: 10};
+    println!(&quot;{}&quot;, p.x);
+}</code></pre></pre>
+<p>The usage of trait (interfaces) with generics exists its possible to use a trait bound
+and fix an allowed type of generic, its possible to return
+an <code>impl Trait</code> on a function.</p>
+<pre><pre class="playground"><code class="language-rust">use std::fmt::Display;
+
+trait Form {
+    fn area(&amp;self) -&gt; f32 ;
+}
+
+struct Square {
+    side :f32
+}
+
+impl Form for Square {
+    fn area(&amp;self) -&gt; f32 {
+        self.side * self.side
+    }
+}
+
+struct Circle {
+    perimeter :f32
+}
+
+impl Form for Circle {
+    fn area(&amp;self) -&gt; f32 {
+        self.perimeter * self.perimeter * 3.14
+    }
+}
+
+fn print_data(title: impl Display) -&gt; impl Display {
+    format!(&quot; My area {title}&quot;)
+}
+
+fn main() {
+    let forms: Vec&lt;Box&lt;dyn Form&gt;&gt; = vec![
+        Box::new(Square{ side: 10.0 }),
+        Box::new(Circle{perimeter: 10.0 })
+    ];
+
+    for f in forms.iter() {
+        let area = f.area();
+        println!(&quot;{}&quot;, print_data(area));
+    }
+}</code></pre></pre>
 
                     </main>
 
@@ -151,7 +269,7 @@
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="day_4.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="day3/exercises1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -165,7 +283,7 @@
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="day_4.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="day3/exercises1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
