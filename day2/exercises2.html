@@ -213,6 +213,60 @@ fn test_invalid_cc_number() {
 
 #[allow(dead_code)]
 fn main() {}</code></pre></pre>
+<ul>
+<li>Prefix matching </li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">fn is_prefix_of(haystack :&amp;str, p :&amp;str) -&gt; bool {
+    haystack.as_bytes().starts_with(p.as_bytes())
+}
+
+pub fn prefix_matches(prefix: &amp;str, request_path: &amp;str) -&gt; bool {
+    for (i, ph) in prefix.split(&quot;/&quot;).enumerate() {
+        let p = request_path.split(&quot;/&quot;).nth(i);
+        match p {
+            Some(c) if ph== &quot;*&quot; =&gt; {},
+            Some(c) if c != ph =&gt; return false,
+            None =&gt; return false,
+            _ =&gt; {}
+        }
+    }
+    true
+}
+
+#[test]
+fn test_matches_without_wildcard() {
+    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers&quot;));
+    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers/abc-123&quot;));
+    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers/abc/books&quot;));
+
+    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishersBooks&quot;));
+    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/parent/publishers&quot;));
+    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1&quot;));
+}
+
+#[test]
+fn test_matches_with_wildcard() {
+    assert!(prefix_matches(
+        &quot;/v1/publishers/*/books&quot;,
+        &quot;/v1/publishers/foo/books&quot;
+    ));
+    assert!(prefix_matches(
+        &quot;/v1/publishers/*/books&quot;,
+        &quot;/v1/publishers/bar/books&quot;
+    ));
+    assert!(prefix_matches(
+        &quot;/v1/publishers/*/books&quot;,
+        &quot;/v1/publishers/foo/books/book1&quot;
+    ));
+
+    assert!(!prefix_matches(&quot;/v1/publishers/*/books&quot;, &quot;/v1/publishers&quot;));
+    assert!(!prefix_matches(
+        &quot;/v1/publishers/*/books&quot;,
+        &quot;/v1/publishers/foo/booksByAuthor&quot;
+    ));
+}
+
+fn main() {}</code></pre></pre>
 
                     </main>
 
