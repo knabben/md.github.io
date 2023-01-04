@@ -155,13 +155,14 @@
         let cc = cc_number.chars().nth(j).unwrap().to_digit(10);
         match cc {
             None =&gt; {}
-            Some(mut v) =&gt; {
-                let mut n = v;
+            Some(mut n) =&gt; {
                 if j % 2 == 0 {
                     n *= 2;
-                    if n &gt; 9 { n -= 9; }
+                    if n &gt; 9 {
+                        n -= 9;
+                    }
                 }
-                sum += v;
+                sum += n;
             }
         }
     }
@@ -198,9 +199,9 @@ fn test_two_digit_cc_number() {
 
 #[test]
 fn test_valid_cc_number() {
-    assert!(luhn(&quot;4263 9826 4026 9298&quot;));
-    assert!(luhn(&quot;4539 3195 0343 6465&quot;));
-    assert!(luhn(&quot;7992 7398 7121 1112&quot;));
+    assert!(luhn(&quot;4263 9826 4026 9299&quot;));
+    assert!(luhn(&quot;4539 3195 0343 6467&quot;));
+    assert!(luhn(&quot;7992 7398 7121 1114&quot;));
 }
 
 #[test]
