@@ -73,3 +73,59 @@ fn test_invalid_cc_number() {
 #[allow(dead_code)]
 fn main() {}
 ```
+
+* Prefix matching 
+ 
+```rust
+fn is_prefix_of(haystack :&str, p :&str) -> bool {
+    haystack.as_bytes().starts_with(p.as_bytes())
+}
+
+pub fn prefix_matches(prefix: &str, request_path: &str) -> bool {
+    for (i, ph) in prefix.split("/").enumerate() {
+        let p = request_path.split("/").nth(i);
+        match p {
+            Some(c) if ph== "*" => {},
+            Some(c) if c != ph => return false,
+            None => return false,
+            _ => {}
+        }
+    }
+    true
+}
+
+#[test]
+fn test_matches_without_wildcard() {
+    assert!(prefix_matches("/v1/publishers", "/v1/publishers"));
+    assert!(prefix_matches("/v1/publishers", "/v1/publishers/abc-123"));
+    assert!(prefix_matches("/v1/publishers", "/v1/publishers/abc/books"));
+
+    assert!(!prefix_matches("/v1/publishers", "/v1/publishersBooks"));
+    assert!(!prefix_matches("/v1/publishers", "/v1/parent/publishers"));
+    assert!(!prefix_matches("/v1/publishers", "/v1"));
+}
+
+#[test]
+fn test_matches_with_wildcard() {
+    assert!(prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/foo/books"
+    ));
+    assert!(prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/bar/books"
+    ));
+    assert!(prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/foo/books/book1"
+    ));
+
+    assert!(!prefix_matches("/v1/publishers/*/books", "/v1/publishers"));
+    assert!(!prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/foo/booksByAuthor"
+    ));
+}
+
+fn main() {}
+```
