@@ -8,4 +8,6 @@
   - [Exercises part I](./day2/exercises1.md)
   - [Exercises part II](./day2/exercises2.md)
 - [Day 3](./day_3.md)
+  - [Exercises part I](./day3/exercises1.md)
+  - [Exercises part II](./day3/exercises2.md)
 - [Day 4](./day_4.md)
