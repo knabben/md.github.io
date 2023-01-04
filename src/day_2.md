@@ -81,3 +81,43 @@ fn main() {
     }
 }
 ```
+
+### Control flows
+
+The old boring if, if let, while, while let, for, loop (endless), match, breaks 
+and continue. Blocks are allowed with `{}` and keep the scope.
+
+
+### Standard library
+
+the standard library has a set of common types that are important
+
+* Option and Result: used for optional values and error handling.
+* Box: an owned pointer for heap-allocated data.
+* Rc: a shared reference-counted pointer for heap-allocated data.
+ 
+Use Rc when need to refer to the same data from multiple places.
+
+```rust
+fn main() {
+    let s = [false, true, false, true, false, true];
+    let value =  s.binary_search_by(|p| p.cmp(&false));
+
+    assert_eq!(value, Ok(0));
+
+    let five = Box::new(100);
+    println!("{}", *five);
+
+    let a = Rc::new(1);
+    let b = a.clone();
+
+    println!("a: {a}");
+    println!("b: {b}");
+}
+```
+
+## Modules
+
+Starts with `mod`, `pub fn` allows public access.
+Access with `<mod>::function`. Folders have a `mod.rs` to declare the module.
+

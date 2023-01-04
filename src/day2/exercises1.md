@@ -63,7 +63,6 @@ use std::ops::Add;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Point {
-    // add fields
     x :i32,
     y :i32,
 }
