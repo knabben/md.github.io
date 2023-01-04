@@ -1,6 +1,6 @@
 ### Day 3 - 1/4/2023
 
-## Traits
+### Traits
 
 Traits are like interfaces and define a required amount of methods your struct needs to have.
 
@@ -62,7 +62,7 @@ fn main() {
 }
 ```
 
-## Generics
+### Generics
 
 Are used to create definitions for items like function sign or structs, which
 we can then use with many different concrete data types.
@@ -135,3 +135,39 @@ fn main() {
     }
 }
 ```
+
+### Error handling
+
+Errors hit in two major categories: recoverable and unrecoverable.
+
+Unrecoverables can be triggered with `panic!`, runtime errors will as well
+possible to handle error with `catch_unwind`
+
+Structures errors handling with Result to code path. 
+Returning results and adding context is allowed
+
+```rust
+fn read() -> Result<string> {
+    Err()    
+}
+
+fn main() {
+    match read() {
+      Ok(f) => {},
+      Err(err) => {}
+    }
+}
+```
+
+### Testing 
+
+Unit tests are supported and integrations are under `tests/`
+Tests are headed as `#[test]` and run with `cargo test`
+
+### Unsafe Rust
+
+Safe rust: memory safe
+Unsafe rust: can trigger undefined behavior if preconditions are violed.
+
+For a deep understanding read the https://doc.rust-lang.org/nomicon/
+Use of `unsafe {}`
