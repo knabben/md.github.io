@@ -594,6 +594,35 @@ fn main() {
         Temperature::Celsius(t) =&gt; println!(&quot;Is high {t}&quot;),
     }
 }</code></pre></pre>
+<h3 id="control-flows"><a class="header" href="#control-flows">Control flows</a></h3>
+<p>The old boring if, if let, while, while let, for, loop (endless), match, breaks 
+and continue. Blocks are allowed with <code>{}</code> and keep the scope.</p>
+<h3 id="standard-library"><a class="header" href="#standard-library">Standard library</a></h3>
+<p>the standard library has a set of common types that are important</p>
+<ul>
+<li>Option and Result: used for optional values and error handling.</li>
+<li>Box: an owned pointer for heap-allocated data.</li>
+<li>Rc: a shared reference-counted pointer for heap-allocated data.</li>
+</ul>
+<p>Use Rc when need to refer to the same data from multiple places.</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let s = [false, true, false, true, false, true];
+    let value =  s.binary_search_by(|p| p.cmp(&amp;false));
+
+    assert_eq!(value, Ok(0));
+
+    let five = Box::new(100);
+    println!(&quot;{}&quot;, *five);
+
+    let a = Rc::new(1);
+    let b = a.clone();
+
+    println!(&quot;a: {a}&quot;);
+    println!(&quot;b: {b}&quot;);
+}</code></pre></pre>
+<h2 id="modules"><a class="header" href="#modules">Modules</a></h2>
+<p>Starts with <code>mod</code>, <code>pub fn</code> allows public access.
+Access with <code>&lt;mod&gt;::function</code>. Folders have a <code>mod.rs</code> to declare the module.</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="exercises-day-2---part-i"><a class="header" href="#exercises-day-2---part-i">Exercises day 2 - Part I</a></h2>
 <ul>
 <li>Simple struct which tracks health statistics.</li>
@@ -657,7 +686,6 @@ fn test_set_age() {
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Point {
-    // add fields
     x :i32,
     y :i32,
 }
