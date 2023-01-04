@@ -142,7 +142,7 @@
                 <div id="content" class="content">
                     <main>
                         <h3 id="day-3---142023"><a class="header" href="#day-3---142023">Day 3 - 1/4/2023</a></h3>
-<h2 id="traits"><a class="header" href="#traits">Traits</a></h2>
+<h3 id="traits"><a class="header" href="#traits">Traits</a></h3>
 <p>Traits are like interfaces and define a required amount of methods your struct needs to have.</p>
 <pre><pre class="playground"><code class="language-rust edditable">fn main() {
     trait Cars {
@@ -196,7 +196,7 @@ fn main() {
         println!(&quot;{}&quot;, h.model);
     }
 }</code></pre></pre>
-<h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
+<h3 id="generics"><a class="header" href="#generics">Generics</a></h3>
 <p>Are used to create definitions for items like function sign or structs, which
 we can then use with many different concrete data types.</p>
 <p>Placing generics in signature allow reusability.
@@ -260,6 +260,30 @@ fn main() {
         println!(&quot;{}&quot;, print_data(area));
     }
 }</code></pre></pre>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error handling</a></h3>
+<p>Errors hit in two major categories: recoverable and unrecoverable.</p>
+<p>Unrecoverables can be triggered with <code>panic!</code>, runtime errors will as well
+possible to handle error with <code>catch_unwind</code></p>
+<p>Structures errors handling with Result to code path. 
+Returning results and adding context is allowed</p>
+<pre><pre class="playground"><code class="language-rust">fn read() -&gt; Result&lt;string&gt; {
+    Err()    
+}
+
+fn main() {
+    match read() {
+      Ok(f) =&gt; {},
+      Err(err) =&gt; {}
+    }
+}</code></pre></pre>
+<h3 id="testing"><a class="header" href="#testing">Testing</a></h3>
+<p>Unit tests are supported and integrations are under <code>tests/</code>
+Tests are headed as <code>#[test]</code> and run with <code>cargo test</code></p>
+<h3 id="unsafe-rust"><a class="header" href="#unsafe-rust">Unsafe Rust</a></h3>
+<p>Safe rust: memory safe
+Unsafe rust: can trigger undefined behavior if preconditions are violed.</p>
+<p>For a deep understanding read the https://doc.rust-lang.org/nomicon/
+Use of <code>unsafe {}</code></p>
 
                     </main>
 

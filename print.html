@@ -911,7 +911,7 @@ fn test_matches_with_wildcard() {
 
 fn main() {}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h3 id="day-3---142023"><a class="header" href="#day-3---142023">Day 3 - 1/4/2023</a></h3>
-<h2 id="traits"><a class="header" href="#traits">Traits</a></h2>
+<h3 id="traits"><a class="header" href="#traits">Traits</a></h3>
 <p>Traits are like interfaces and define a required amount of methods your struct needs to have.</p>
 <pre><pre class="playground"><code class="language-rust edditable">fn main() {
     trait Cars {
@@ -965,7 +965,7 @@ fn main() {
         println!(&quot;{}&quot;, h.model);
     }
 }</code></pre></pre>
-<h2 id="generics"><a class="header" href="#generics">Generics</a></h2>
+<h3 id="generics"><a class="header" href="#generics">Generics</a></h3>
 <p>Are used to create definitions for items like function sign or structs, which
 we can then use with many different concrete data types.</p>
 <p>Placing generics in signature allow reusability.
@@ -1029,6 +1029,30 @@ fn main() {
         println!(&quot;{}&quot;, print_data(area));
     }
 }</code></pre></pre>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error handling</a></h3>
+<p>Errors hit in two major categories: recoverable and unrecoverable.</p>
+<p>Unrecoverables can be triggered with <code>panic!</code>, runtime errors will as well
+possible to handle error with <code>catch_unwind</code></p>
+<p>Structures errors handling with Result to code path. 
+Returning results and adding context is allowed</p>
+<pre><pre class="playground"><code class="language-rust">fn read() -&gt; Result&lt;string&gt; {
+    Err()    
+}
+
+fn main() {
+    match read() {
+      Ok(f) =&gt; {},
+      Err(err) =&gt; {}
+    }
+}</code></pre></pre>
+<h3 id="testing"><a class="header" href="#testing">Testing</a></h3>
+<p>Unit tests are supported and integrations are under <code>tests/</code>
+Tests are headed as <code>#[test]</code> and run with <code>cargo test</code></p>
+<h3 id="unsafe-rust"><a class="header" href="#unsafe-rust">Unsafe Rust</a></h3>
+<p>Safe rust: memory safe
+Unsafe rust: can trigger undefined behavior if preconditions are violed.</p>
+<p>For a deep understanding read the https://doc.rust-lang.org/nomicon/
+Use of <code>unsafe {}</code></p>
 <div style="break-before: page; page-break-before: always;"></div><ul>
 <li>simple gui</li>
 </ul>
@@ -1141,7 +1165,79 @@ fn main() {
     )));
 
     window.draw();</code></pre></pre>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h3 id="day-4---152023"><a class="header" href="#day-4---152023">Day 4 - 1/5/2023</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><pre><pre class="playground"><code class="language-rust">
+mod ffi {
+    use std::os::raw::{c_char, c_int, c_long, c_ulong, c_ushort};
+
+    // Opaque type. See https://doc.rust-lang.org/nomicon/ffi.html.
+    #[repr(C)]
+    pub struct DIR {
+        _data: [u8; 0],
+        _marker: core::marker::PhantomData&lt;(*mut u8, core::marker::PhantomPinned)&gt;,
+    }
+
+    // Layout as per readdir(3) and definitions in /usr/include/x86_64-linux-gnu.
+    #[repr(C)]
+    pub struct dirent {
+        pub d_ino: c_long,
+        pub d_off: c_ulong,
+        pub d_reclen: c_ushort,
+        pub d_type: c_char,
+        pub d_name: [c_char; 256],
+    }
+
+    extern &quot;C&quot; {
+        pub fn opendir(s: *const c_char) -&gt; *mut DIR;
+        pub fn readdir(s: *mut DIR) -&gt; *const dirent;
+        pub fn closedir(s: *mut DIR) -&gt; c_int;
+    }
+}
+
+use std::ffi::{CStr, CString, OsStr, OsString};
+use std::os::unix::ffi::OsStrExt;
+use crate::ffi::opendir;
+
+#[derive(Debug)]
+struct DirectoryIterator {
+    path: CString,
+    dir: *mut ffi::DIR,
+}
+
+impl DirectoryIterator {
+    fn new(path: &amp;str) -&gt; Result&lt;DirectoryIterator, String&gt; {
+        unsafe {
+            let path = CString::new(path).map_err(|err| format!(&quot;invalid path {err}&quot;))?;
+            let dir = ffi::opendir(path.as_ptr());
+            if dir.is_null() {
+                return Err(format!(&quot;cannot not open {:?}&quot;, path))
+            }
+            Ok( DirectoryIterator{path, dir})
+        }
+    }
+}
+
+impl Iterator for DirectoryIterator {
+    type Item = OsString;
+
+    fn next(&amp;mut self) -&gt; Option&lt;OsString&gt; {
+        let dirent = unsafe {ffi::readdir(self.dir)};
+        if dirent.is_null() {
+            return None;
+        }
+        let d_name = unsafe {CStr::from_ptr((*dirent).d_name.as_ptr())};
+        let os_str = OsStr::from_bytes(d_name.to_bytes());
+
+        Some(os_str.to_owned())
+    }
+}
+
+fn main() -&gt; Result&lt;(), String&gt; {
+    let iter = DirectoryIterator::new(&quot;.&quot;)?;
+    println!(&quot;files: {:#?}&quot;, iter.collect::&lt;Vec&lt;_&gt;&gt;());
+    Ok(())
+}</code></pre></pre>
+<p>Solution is under <a href="https://github.com/google/comprehensive-rust/blob/main/src/exercises/day-3/safe-ffi-wrapper.rs">here</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="day-4---152023"><a class="header" href="#day-4---152023">Day 4 - 1/5/2023</a></h3>
 
                     </main>
 
