@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Day 4 - Rust 101/102</title>
+        <title>Day 1 - the ancient grimoire</title>
 
 
         <!-- Custom HTML head -->
@@ -12,21 +12,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -34,7 +34,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script>
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="init.html">🦀</a></li><li class="chapter-item expanded "><a href="day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="day_4.html" class="active"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">Gate</a></li><li class="chapter-item expanded affix "><a href="../aws/network/init.html">AWS</a></li><li class="chapter-item expanded affix "><a href="../rust/init.html">🦀 Rust</a></li><li class="chapter-item expanded "><a href="../rust/day_1.html" class="active"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../rust/day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -109,10 +109,10 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Rust 101/102</h1>
+                    <h1 class="menu-title">the ancient grimoire</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
 
@@ -141,81 +141,68 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h3 id="day-4---152023"><a class="header" href="#day-4---152023">Day 4 - 1/5/2023</a></h3>
-<h3 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h3>
-<p>Starting with threads, variables are shared via scope</p>
-<pre><pre class="playground"><code class="language-rust">use std::thread;
-use std::time::Duration;
-
-fn main() {
-    let s = String::from(&quot;hello&quot;) ;
-    thread::scope(|scope| {
-        scope.spawn(|| {
-            println!(&quot;str: {}&quot;, s.as_str());
-
-            for i in 1..10 {
-                println!(&quot;Count in thread: {i}! {s}&quot;);
-                thread::sleep(Duration::from_millis(5));
-            }
-        });
-
-        scope.spawn(|| {
-            thread::sleep(Duration::from_millis(500));
-            println!(&quot;new thread str: {}&quot;, s.as_str());
-        });
-    });
-}</code></pre></pre>
-<h3 id="channels"><a class="header" href="#channels">Channels</a></h3>
-<p>Available as <code>Sender&lt;T&gt;</code> and <code>Receiver&lt;T&gt;</code>, uses the module str::sync:mpsc</p>
-<p>Unbounded and async channels with <code>mpsc::channel</code> and bounded sync <code>mpsc::sync_channel</code></p>
-<pre><pre class="playground"><code class="language-rust">fn main() {
-    let (tx, rx) = mpsc::channel();
-
-    thread::spawn(move || {
-        let thread_id = thread::current().id();
-        for i in 1..10 {
-            tx.send(format!(&quot;Message {i}&quot;)).unwrap();
-            println!(&quot;{thread_id:?}: sent Message {i}&quot;);
-        }
-        println!(&quot;{thread_id:?}: done&quot;);
-    });
-    thread::sleep(Duration::from_millis(100));
-
-    for msg in rx.iter() {
-        println!(&quot;Main: got {}&quot;, msg);
-    }
-}</code></pre></pre>
-<h3 id="shared-state"><a class="header" href="#shared-state">Shared state</a></h3>
+                        <h3 id="day-1---122023"><a class="header" href="#day-1---122023">Day 1 - 1/2/2023</a></h3>
+<p>Modern systems programming language focusing on <em>safety</em>, <em>speed</em> and <em>concurrency</em>.
+Accomplishes these goals by being memory safe without using garbage collection.</p>
+<h3 id="rust-editions"><a class="header" href="#rust-editions"><a href="https://doc.rust-lang.org/edition-guide/editions/index.html">Rust editions</a></a></h3>
+<p>Backport using cargo <code>--edition</code>, <code>cargo fix</code> can help  on code base migration</p>
 <ul>
-<li><code>Arc&lt;T&gt;</code> allows shared read-only access via its <code>arc.clone()</code> methods across threads.</li>
-<li><code>Mutex&lt;T&gt;</code> ensure mutual exclusion and allows mutable access to T behind a read-only interface.</li>
+<li>Rust 2015 (May) - stability without stagnation
+<ul>
+<li>Do not have async or await keywords</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust">use std::thread;
-use std::sync::Arc;
-
-fn main() {
-    let mut v = Arc::new(&quot;Shared data&quot;);
-    let mut handles =  Vec::new();
-
-    for _ in 1..5 {
-        let v = v.clone();
-        handles.push(thread::spawn(move || {
-            println!(&quot;bla {v:?}&quot;)
-        }))
-    }
-
-    handles.into_iter().for_each(|h| h.join().unwrap());
-    println!(&quot;v: {v:?}&quot;);
-}</code></pre></pre>
+</li>
+<li>Rust 2018</li>
+<li>Rust 2021 (latest) - 1.56.0 - RFC #3085</li>
+</ul>
+<p>Current version used:</p>
+<pre><code>$ cargo version
+cargo 1.66.0 (d65d197ad 2022-11-15)
+</code></pre>
+<h2 id="tools-and-binaries"><a class="header" href="#tools-and-binaries">Tools and binaries</a></h2>
+<p>Install Rust on ~/.cargo with the following command</p>
+<pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre>
+<p>Shell configuration is already made, toolchain management is made via <code>rustup</code> (i.e. gimme or pyenv)</p>
+<p><code>cargo</code> (pkg manager) is the tool responsible to manage projects, install dependencies, run tests, etc.</p>
+<pre><code class="language-shell">cargo --help
+Some common cargo commands are (see all commands with --list):
+    build, b    Compile the current package
+    check, c    Analyze the current package and report errors, but don't build object files
+    clean       Remove the target directory
+    doc, d      Build this package's and its dependencies' documentation
+    new         Create a new cargo package
+    init        Create a new cargo package in an existing directory
+    add         Add dependencies to a manifest file
+    remove      Remove dependencies from a manifest file
+    run, r      Run a binary or example of the local package
+    test, t     Run the tests
+    bench       Run the benchmarks
+    update      Update dependencies listed in Cargo.lock
+    search      Search registry for crates
+    publish     Package and upload this package to the registry
+    install     Install a Rust binary. Default location is $HOME/.cargo/bin
+    uninstall   Uninstall a Rust binary
+</code></pre>
+<p>Other binaries includes:</p>
+<ul>
+<li>rustc - rust compiler</li>
+<li>mdbook - create markdown books like this one</li>
+<li>rustfmt - linter and formatter</li>
+<li>rustup - toolchain installer</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="day3/exercises2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../rust/init.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next" href="../rust/day1/1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -223,10 +210,13 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="day3/exercises2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../rust/init.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next" href="../rust/day1/1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
@@ -239,13 +229,13 @@ fn main() {
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 

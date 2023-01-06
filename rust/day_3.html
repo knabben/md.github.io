@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Exercises part II - Rust 101/102</title>
+        <title>Day 3 - the ancient grimoire</title>
 
 
         <!-- Custom HTML head -->
@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">🦀</a></li><li class="chapter-item expanded "><a href="../day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day2/exercises2.html" class="active"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">Gate</a></li><li class="chapter-item expanded affix "><a href="../aws/network/init.html">AWS</a></li><li class="chapter-item expanded affix "><a href="../rust/init.html">🦀 Rust</a></li><li class="chapter-item expanded "><a href="../rust/day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../rust/day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_3.html" class="active"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -109,7 +109,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Rust 101/102</h1>
+                    <h1 class="menu-title">the ancient grimoire</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -141,142 +141,159 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="exercises-day-2---part-ii"><a class="header" href="#exercises-day-2---part-ii">Exercises Day 2 - Part II</a></h2>
-<ul>
-<li>luhn algorithm </li>
-</ul>
-<pre><pre class="playground"><code class="language-rust">pub fn luhn(cc_n: &amp;str) -&gt; bool {
-    let mut sum = 0;
-    let cc_number :String = cc_n.chars().filter(|c| !c.is_whitespace()).collect();
-    let length = cc_number.len();
-    let parity = length % 2;
-
-    for (j, x) in cc_number.chars().enumerate() {
-        let cc = cc_number.chars().nth(j).unwrap().to_digit(10);
-        match cc {
-            None =&gt; {}
-            Some(mut n) =&gt; {
-                if j % 2 == 0 {
-                    n *= 2;
-                    if n &gt; 9 {
-                        n -= 9;
-                    }
-                }
-                sum += n;
-            }
+                        <h3 id="day-3---142023"><a class="header" href="#day-3---142023">Day 3 - 1/4/2023</a></h3>
+<h3 id="traits"><a class="header" href="#traits">Traits</a></h3>
+<p>Traits are like interfaces and define a required amount of methods your struct needs to have.</p>
+<pre><pre class="playground"><code class="language-rust edditable">fn main() {
+    trait Cars {
+        fn model(self) -&gt; String;
+        fn board(&amp;self, number: i32) {
+            println!(&quot;ABC{number}&quot;)
         }
     }
-    if sum == 0 {
-        false
-    } else {
-        println!(&quot;{} {}&quot;, sum % 10, sum);
-        sum % 10 == 0
+
+    struct Hundai {
+        model :String
     }
-}
 
-#[test]
-fn test_non_digit_cc_number() {
-    assert!(!luhn(&quot;foo&quot;));
-}
-
-#[test]
-fn test_empty_cc_number() {
-    assert!(!luhn(&quot;&quot;));
-    assert!(!luhn(&quot; &quot;));
-    assert!(!luhn(&quot;  &quot;));
-    assert!(!luhn(&quot;    &quot;));
-}
-
-#[test]
-fn test_single_digit_cc_number() {
-    assert!(!luhn(&quot;0&quot;));
-}
-
-#[test]
-fn test_two_digit_cc_number() {
-    assert!(luhn(&quot; 0 0 &quot;));
-}
-
-#[test]
-fn test_valid_cc_number() {
-    assert!(luhn(&quot;4263 9826 4026 9299&quot;));
-    assert!(luhn(&quot;4539 3195 0343 6467&quot;));
-    assert!(luhn(&quot;7992 7398 7121 1114&quot;));
-}
-
-#[test]
-fn test_invalid_cc_number() {
-    assert!(!luhn(&quot;4223 9826 4026 9299&quot;));
-    assert!(!luhn(&quot;4539 3195 0343 6476&quot;));
-    assert!(!luhn(&quot;8273 1232 7352 0569&quot;));
-}
-
-#[allow(dead_code)]
-fn main() {}</code></pre></pre>
-<ul>
-<li>Prefix matching </li>
-</ul>
-<pre><pre class="playground"><code class="language-rust">fn is_prefix_of(haystack :&amp;str, p :&amp;str) -&gt; bool {
-    haystack.as_bytes().starts_with(p.as_bytes())
-}
-
-pub fn prefix_matches(prefix: &amp;str, request_path: &amp;str) -&gt; bool {
-    for (i, ph) in prefix.split(&quot;/&quot;).enumerate() {
-        let p = request_path.split(&quot;/&quot;).nth(i);
-        match p {
-            Some(c) if ph== &quot;*&quot; =&gt; {},
-            Some(c) if c != ph =&gt; return false,
-            None =&gt; return false,
-            _ =&gt; {}
+    impl Cars for Hundai {
+        fn model(self) -&gt; String {
+            self.model
         }
     }
-    true
+}</code></pre></pre>
+<p>Traits can be derived and implement default behaviors</p>
+<ul>
+<li><code>Iterator</code> and <code>IntoIterator</code> for loops.</li>
+<li><code>From</code> and <code>Into</code> to convert values.</li>
+<li><code>Read</code> and <code>Write</code> for IO</li>
+<li><code>Add, Mul</code> for operator overloading</li>
+<li><code>Drop</code> for destructors</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">trait Cars {
+    fn new() -&gt; Self;
 }
 
-#[test]
-fn test_matches_without_wildcard() {
-    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers&quot;));
-    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers/abc-123&quot;));
-    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers/abc/books&quot;));
-
-    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishersBooks&quot;));
-    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/parent/publishers&quot;));
-    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1&quot;));
+struct Hundai {
+    model :String
 }
 
-#[test]
-fn test_matches_with_wildcard() {
-    assert!(prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/foo/books&quot;
-    ));
-    assert!(prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/bar/books&quot;
-    ));
-    assert!(prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/foo/books/book1&quot;
-    ));
-
-    assert!(!prefix_matches(&quot;/v1/publishers/*/books&quot;, &quot;/v1/publishers&quot;));
-    assert!(!prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/foo/booksByAuthor&quot;
-    ));
+impl Cars for Hundai {
+    fn new() -&gt; Self {
+        Hundai{model: String::from(&quot;h&quot;) }
+    }
 }
 
-fn main() {}</code></pre></pre>
+impl Drop for Hundai {
+    fn drop(&amp;mut self) {
+        println!(&quot;dropping here&quot;);
+    }
+}
+
+fn main() {
+    {
+        let h = Hundai::new();
+        println!(&quot;{}&quot;, h.model);
+    }
+}</code></pre></pre>
+<h3 id="generics"><a class="header" href="#generics">Generics</a></h3>
+<p>Are used to create definitions for items like function sign or structs, which
+we can then use with many different concrete data types.</p>
+<p>Placing generics in signature allow reusability.
+Different types are allowed in the same struct</p>
+<pre><pre class="playground"><code class="language-rust">struct Point&lt;T, U&gt; {
+    x: T,
+    y: U,
+}
+
+fn first&lt;T&gt;(list: &amp;[T]) -&gt; &amp;T {
+    &amp;list[0]
+}
+
+fn main() {
+    println!(&quot;{}&quot;, first(&amp;vec![1,2,3,5]));
+    println!(&quot;{}&quot;, first(&amp;vec![&quot;a&quot;, &quot;b&quot;]));
+    let p = Point{x:5, y: 10};
+    println!(&quot;{}&quot;, p.x);
+}</code></pre></pre>
+<p>The usage of trait (interfaces) with generics exists its possible to use a trait bound
+and fix an allowed type of generic, its possible to return
+an <code>impl Trait</code> on a function.</p>
+<pre><pre class="playground"><code class="language-rust">use std::fmt::Display;
+
+trait Form {
+    fn area(&amp;self) -&gt; f32 ;
+}
+
+struct Square {
+    side :f32
+}
+
+impl Form for Square {
+    fn area(&amp;self) -&gt; f32 {
+        self.side * self.side
+    }
+}
+
+struct Circle {
+    perimeter :f32
+}
+
+impl Form for Circle {
+    fn area(&amp;self) -&gt; f32 {
+        self.perimeter * self.perimeter * 3.14
+    }
+}
+
+fn print_data(title: impl Display) -&gt; impl Display {
+    format!(&quot; My area {title}&quot;)
+}
+
+fn main() {
+    let forms: Vec&lt;Box&lt;dyn Form&gt;&gt; = vec![
+        Box::new(Square{ side: 10.0 }),
+        Box::new(Circle{perimeter: 10.0 })
+    ];
+
+    for f in forms.iter() {
+        let area = f.area();
+        println!(&quot;{}&quot;, print_data(area));
+    }
+}</code></pre></pre>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error handling</a></h3>
+<p>Errors hit in two major categories: recoverable and unrecoverable.</p>
+<p>Unrecoverables can be triggered with <code>panic!</code>, runtime errors will as well
+possible to handle error with <code>catch_unwind</code></p>
+<p>Structures errors handling with Result to code path. 
+Returning results and adding context is allowed</p>
+<pre><pre class="playground"><code class="language-rust">fn read() -&gt; Result&lt;string&gt; {
+    Err()    
+}
+
+fn main() {
+    match read() {
+      Ok(f) =&gt; {},
+      Err(err) =&gt; {}
+    }
+}</code></pre></pre>
+<h3 id="testing"><a class="header" href="#testing">Testing</a></h3>
+<p>Unit tests are supported and integrations are under <code>tests/</code>
+Tests are headed as <code>#[test]</code> and run with <code>cargo test</code></p>
+<h3 id="unsafe-rust"><a class="header" href="#unsafe-rust">Unsafe Rust</a></h3>
+<p>Safe rust: memory safe
+Unsafe rust: can trigger undefined behavior if preconditions are violed.</p>
+<p>For a deep understanding read the https://doc.rust-lang.org/nomicon/
+Use of <code>unsafe {}</code></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../day2/exercises1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../rust/day2/exercises2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../day_3.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../rust/day3/exercises1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -286,11 +303,11 @@ fn main() {}</code></pre></pre>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../day2/exercises1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../rust/day2/exercises2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../day_3.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../rust/day3/exercises1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

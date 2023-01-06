@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Exercises part I - Rust 101/102</title>
+        <title>Day 2 - the ancient grimoire</title>
 
 
         <!-- Custom HTML head -->
@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">🦀</a></li><li class="chapter-item expanded "><a href="../day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day3/exercises1.html" class="active"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">Gate</a></li><li class="chapter-item expanded affix "><a href="../aws/network/init.html">AWS</a></li><li class="chapter-item expanded affix "><a href="../rust/init.html">🦀 Rust</a></li><li class="chapter-item expanded "><a href="../rust/day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../rust/day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_2.html" class="active"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -109,7 +109,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Rust 101/102</h1>
+                    <h1 class="menu-title">the ancient grimoire</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -141,128 +141,117 @@
 
                 <div id="content" class="content">
                     <main>
-                        <ul>
-<li>simple gui</li>
+                        <h3 id="day-2---132023"><a class="header" href="#day-2---132023">Day 2 - 1/3/2023</a></h3>
+<p>Structs are cool, methods can access the struct pointer
+Possible to use a tuple struct - normally used for single field wrappers</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum TShirt {
+    L,
+    M,
+    P,
+}
+
+struct Newtons(f64);
+
+struct Member {
+    name :String,
+    force :Newtons,
+    tshirt :TShirt,
+}
+
+impl Member {
+    fn set_force(&amp;mut self, force :Newtons) {
+       self.force = force 
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Usage of method receivers:</p>
+<ul>
+<li>&amp;self : borrows the object from the caller using a shared and immutable reference.</li>
+<li>&amp;mut self: borrows the object from the caller using a unique and mutable reference.</li>
+<li>self: takes ownership of the object and moves it away from the caller.</li>
+<li>none: status method on the struct.</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust">use std::fmt::Write;
-
-pub trait Widget {
-    /// Natural width of `self`.
-    fn width(&amp;self) -&gt; usize;
-
-    /// Draw the widget into a buffer.
-    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write);
-
-    /// Draw the widget on standard output.
-    fn draw(&amp;self) {
-        let mut buffer = String::new();
-        self.draw_into(&amp;mut buffer);
-        println!(&quot;{}&quot;, &amp;buffer);
-    }
-}
-
-pub struct Label {
-    label: String,
-}
-
-impl Label {
-    fn new(label: &amp;str) -&gt; Label {
-        Label {
-            label: label.to_owned(),
-        }
-    }
-}
-
-pub struct Button {
-    label: Label,
-    callback: Box&lt;dyn FnMut()&gt;,
-}
-
-impl Button {
-    fn new(label: &amp;str, callback: Box&lt;dyn FnMut()&gt;) -&gt; Button {
-        Button {
-            label: Label::new(label),
-            callback,
-        }
-    }
-}
-
-pub struct Window {
-    title: String,
-    widgets: Vec&lt;Box&lt;dyn Widget&gt;&gt;,
-}
-
-impl Window {
-    fn new(title: &amp;str) -&gt; Window {
-        Window {
-            title: title.to_owned(),
-            widgets: Vec::new(),
-        }
-    }
-
-    fn add_widget(&amp;mut self, widget: Box&lt;dyn Widget&gt;) {
-        self.widgets.push(widget);
-    }
-}
-
-
-impl Widget for Label {
-    fn width(&amp;self) -&gt; usize {
-        unimplemented!()
-    }
-
-    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write) {
-        buffer.write_str(self.label.as_str()).unwrap();
-    }
-}
-
-impl Widget for Button {
-    fn width(&amp;self) -&gt; usize {
-        unimplemented!()
-    }
-
-    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write) {
-        buffer.write_str(&quot;\n|&quot;).unwrap();
-        buffer.write_str(&amp;self.label.label.as_str()).unwrap();
-        buffer.write_str(&quot;|\n&quot;).unwrap();
-    }
-}
-
-impl Widget for Window {
-    fn width(&amp;self) -&gt; usize {
-        10
-    }
-
-    fn draw_into(&amp;self, buffer: &amp;mut dyn std::fmt::Write) {
-        buffer.write_str(&quot;\n--------------\n&quot;).unwrap();
-        buffer.write_str(self.title.as_str()).unwrap();
-        buffer.write_str(&quot;\n--------------\n&quot;).unwrap();
-        for w in &amp;self.widgets {
-            w.draw_into(buffer)
-        }
-    }
+<p>after taking ownership with self, the variable is moved and cannot be borrowed back.</p>
+<h3 id="pattern-matching"><a class="header" href="#pattern-matching">Pattern matching</a></h3>
+<p>This is an important feature of switch case that can be extended to more complex pattterns
+latter, </p>
+<pre><pre class="playground"><code class="language-rust">enum Result {
+    Ok(i32),
+    Error(String),
 }
 
 fn main() {
-    let mut window = Window::new(&quot;Rust GUI Demo 1.23&quot;);
+    let has_result = Result::Error(&quot;msg&quot;.to_string());
+    match has_result {
+        Result::Ok(n) =&gt; println!(&quot;received {n}&quot;),
+        _ =&gt; println!(&quot;default&quot;),
+    }
+}</code></pre></pre>
+<p>Deconstructuring enums/struct and Arrays - </p>
+<pre><pre class="playground"><code class="language-rust editable">enum Temperature {
+    Celsius(i32),
+}
 
-    window.add_widget(Box::new(Label::new(&quot;This is a small text GUI demo.&quot;)));
-    window.add_widget(Box::new(Button::new(
-        &quot;Click me!&quot;,
-        Box::new(|| println!(&quot;You clicked the button!&quot;)),
-    )));
+struct SomeStruct {
+    a: u32,
+    b: u32,
+}
 
-    window.draw();</code></pre></pre>
+fn main() {
+   let ss = SomeStruct{a: 2000, b: 0 };
+    match ss {
+        SomeStruct { a: 1, b } =&gt; println!(&quot; a = {b} &quot;),
+        SomeStruct { .. } =&gt; println!(&quot; default a &quot;),
+    }
+
+    // match guards
+    let temp = Temperature::Celsius(36);
+    match temp {
+        Temperature::Celsius(t) if t &gt; 40 =&gt; println!(&quot;Is high {t}&quot;),
+        Temperature::Celsius(t) =&gt; println!(&quot;Is high {t}&quot;),
+    }
+}</code></pre></pre>
+<h3 id="control-flows"><a class="header" href="#control-flows">Control flows</a></h3>
+<p>The old boring if, if let, while, while let, for, loop (endless), match, breaks 
+and continue. Blocks are allowed with <code>{}</code> and keep the scope.</p>
+<h3 id="standard-library"><a class="header" href="#standard-library">Standard library</a></h3>
+<p>the standard library has a set of common types that are important</p>
+<ul>
+<li>Option and Result: used for optional values and error handling.</li>
+<li>Box: an owned pointer for heap-allocated data.</li>
+<li>Rc: a shared reference-counted pointer for heap-allocated data.</li>
+</ul>
+<p>Use Rc when need to refer to the same data from multiple places.</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let s = [false, true, false, true, false, true];
+    let value =  s.binary_search_by(|p| p.cmp(&amp;false));
+
+    assert_eq!(value, Ok(0));
+
+    let five = Box::new(100);
+    println!(&quot;{}&quot;, *five);
+
+    let a = Rc::new(1);
+    let b = a.clone();
+
+    println!(&quot;a: {a}&quot;);
+    println!(&quot;b: {b}&quot;);
+}</code></pre></pre>
+<h2 id="modules"><a class="header" href="#modules">Modules</a></h2>
+<p>Starts with <code>mod</code>, <code>pub fn</code> allows public access.
+Access with <code>&lt;mod&gt;::function</code>. Folders have a <code>mod.rs</code> to declare the module.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../day_3.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../rust/day1/2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../day3/exercises2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../rust/day2/exercises1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -272,11 +261,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../day_3.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../rust/day1/2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../day3/exercises2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../rust/day2/exercises1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Exercises part I - Rust 101/102</title>
+        <title>Day 4 - the ancient grimoire</title>
 
 
         <!-- Custom HTML head -->
@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">🦀</a></li><li class="chapter-item expanded "><a href="../day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day2/exercises1.html" class="active"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../init.html">Gate</a></li><li class="chapter-item expanded affix "><a href="../aws/network/init.html">AWS</a></li><li class="chapter-item expanded affix "><a href="../rust/init.html">🦀 Rust</a></li><li class="chapter-item expanded "><a href="../rust/day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../rust/day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rust/day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../rust/day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../rust/day_4.html" class="active"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -109,7 +109,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Rust 101/102</h1>
+                    <h1 class="menu-title">the ancient grimoire</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -141,179 +141,81 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="exercises-day-2---part-i"><a class="header" href="#exercises-day-2---part-i">Exercises day 2 - Part I</a></h2>
-<ul>
-<li>Simple struct which tracks health statistics.</li>
-</ul>
-<pre><pre class="playground"><code class="language-rust">struct User {
-    name: String,
-    age: u32,
-    weight: f32,
-}
-
-impl User {
-    pub fn new(name: String, age: u32, weight: f32) -&gt; Self {
-        return User{name, age, weight}
-    }
-
-    pub fn name(&amp;self) -&gt; &amp;str {
-        &amp;self.name
-    }
-
-    pub fn age(&amp;self) -&gt; u32 {
-        self.age
-    }
-
-    pub fn weight(&amp;self) -&gt; f32 {
-        self.weight
-    }
-
-    pub fn set_age(&amp;mut self, new_age: u32) {
-        self.age = new_age
-    }
-
-    pub fn set_weight(&amp;mut self, new_weight: f32) {
-        self.weight = new_weight
-    }
-}
+                        <h3 id="day-4---152023"><a class="header" href="#day-4---152023">Day 4 - 1/5/2023</a></h3>
+<h3 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h3>
+<p>Starting with threads, variables are shared via scope</p>
+<pre><pre class="playground"><code class="language-rust">use std::thread;
+use std::time::Duration;
 
 fn main() {
-    let bob = User::new(String::from(&quot;Bob&quot;), 32, 155.2);
-    println!(&quot;I'm {} and my age is {}&quot;, bob.name(), bob.age());
-}
+    let s = String::from(&quot;hello&quot;) ;
+    thread::scope(|scope| {
+        scope.spawn(|| {
+            println!(&quot;str: {}&quot;, s.as_str());
 
-#[test]
-fn test_weight() {
-    let bob = User::new(String::from(&quot;Bob&quot;), 32, 155.2);
-    assert_eq!(bob.weight(), 155.2);
-}
+            for i in 1..10 {
+                println!(&quot;Count in thread: {i}! {s}&quot;);
+                thread::sleep(Duration::from_millis(5));
+            }
+        });
 
-#[test]
-fn test_set_age() {
-    let mut bob = User::new(String::from(&quot;Bob&quot;), 33, 155.2);
-    assert_eq!(bob.age(), 32);
-    bob.set_age(33);
-    assert_eq!(bob.age(), 33);
+        scope.spawn(|| {
+            thread::sleep(Duration::from_millis(500));
+            println!(&quot;new thread str: {}&quot;, s.as_str());
+        });
+    });
 }</code></pre></pre>
-<ul>
-<li>Multiple structs and enums for a drawing library.</li>
-</ul>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use std::ops::Add;
+<h3 id="channels"><a class="header" href="#channels">Channels</a></h3>
+<p>Available as <code>Sender&lt;T&gt;</code> and <code>Receiver&lt;T&gt;</code>, uses the module str::sync:mpsc</p>
+<p>Unbounded and async channels with <code>mpsc::channel</code> and bounded sync <code>mpsc::sync_channel</code></p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let (tx, rx) = mpsc::channel();
 
-#[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Point {
-    x :i32,
-    y :i32,
-}
-
-impl Add for Point {
-    type Output = Self;
-
-    fn add(self, other: Self) -&gt; Self {
-        Self {
-            x: self.x + other.x,
-            y: self.y + other.y,
+    thread::spawn(move || {
+        let thread_id = thread::current().id();
+        for i in 1..10 {
+            tx.send(format!(&quot;Message {i}&quot;)).unwrap();
+            println!(&quot;{thread_id:?}: sent Message {i}&quot;);
         }
-    }
-}
+        println!(&quot;{thread_id:?}: done&quot;);
+    });
+    thread::sleep(Duration::from_millis(100));
 
-impl Point {
-    fn new(x :i32, y :i32) -&gt; Point {
-        Point{x, y}
+    for msg in rx.iter() {
+        println!(&quot;Main: got {}&quot;, msg);
     }
-    fn magnitude(&amp;self) -&gt; f64 {
-        f64::sqrt( (i32::pow(self.x, 2) + i32::pow(self.y, 2)).into())
-    }
+}</code></pre></pre>
+<h3 id="shared-state"><a class="header" href="#shared-state">Shared state</a></h3>
+<ul>
+<li><code>Arc&lt;T&gt;</code> allows shared read-only access via its <code>arc.clone()</code> methods across threads.</li>
+<li><code>Mutex&lt;T&gt;</code> ensure mutual exclusion and allows mutable access to T behind a read-only interface.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">use std::thread;
+use std::sync::Arc;
 
-    fn dist(&amp;self, p1 :Point) -&gt; f64{
-        f64::sqrt( (i32::pow(p1.x - self.x, 2) + i32::pow(p1.y - self.y, 2)).into())
-    }
-}
+fn main() {
+    let mut v = Arc::new(&quot;Shared data&quot;);
+    let mut handles =  Vec::new();
 
-pub struct Polygon {
-    points :Vec&lt;Point&gt;
-}
-
-impl Polygon {
-    fn new() -&gt; Polygon {
-        Polygon{ points: vec![]}
-    }
-
-    fn add_point(&amp;mut self, p :Point) {
-        self.points.push(p)
-    }
-    fn left_most_point(&amp;self) -&gt; Option&lt;&amp;Point&gt; {
-       self.points.first()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn round_two_digits(x: f64) -&gt; f64 {
-        (x * 100.0).round() / 100.0
+    for _ in 1..5 {
+        let v = v.clone();
+        handles.push(thread::spawn(move || {
+            println!(&quot;bla {v:?}&quot;)
+        }))
     }
 
-    #[test]
-    fn test_point_magnitude() {
-        let p1 = Point::new(12, 13);
-        assert_eq!(round_two_digits(p1.magnitude()), 17.69);
-    }
-
-    #[test]
-    fn test_point_dist() {
-        let p1 = Point::new(10, 10);
-        let p2 = Point::new(14, 13);
-        assert_eq!(round_two_digits(p1.dist(p2)), 5.00);
-    }
-
-    #[test]
-    fn test_point_add() {
-        let p1 = Point::new(16, 16);
-        let p2 = p1 + Point::new(-4, 3);
-        assert_eq!(p2, Point::new(12, 19));
-    }
-
-    #[test]
-    fn test_polygon_left_most_point() {
-        let p1 = Point::new(12, 13);
-        let p2 = Point::new(16, 16);
-
-        let mut poly = Polygon::new();
-        poly.add_point(p1);
-        poly.add_point(p2);
-        assert_eq!(poly.left_most_point(), Some(&amp;p1));
-    }
-
-    #[test]
-    fn test_polygon_iter() {
-        let p1 = Point::new(12, 13);
-        let p2 = Point::new(16, 16);
-
-        let mut poly = Polygon::new();
-        poly.add_point(p1);
-        poly.add_point(p2);
-
-        let points = poly.points.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;();
-        assert_eq!(points, vec![Point::new(12, 13), Point::new(16, 16)]);
-    }
-}
-<span class="boring">}</span></code></pre></pre>
+    handles.into_iter().for_each(|h| h.join().unwrap());
+    println!(&quot;v: {v:?}&quot;);
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../day_2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../rust/day3/exercises2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../day2/exercises2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -321,13 +223,10 @@ mod tests {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../day_2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../rust/day3/exercises2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../day2/exercises2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
