@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="winapi/init.html">Windows API</a></li><li class="chapter-item expanded affix "><a href="aws/network/init.html">AWS</a></li><li class="chapter-item expanded affix "><a href="rust/init.html">🦀 Rust</a></li><li class="chapter-item expanded "><a href="rust/day_1.html"><strong aria-hidden="true">1.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day1/1.html"><strong aria-hidden="true">1.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="rust/day1/2.html"><strong aria-hidden="true">1.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_2.html"><strong aria-hidden="true">2.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day2/exercises1.html"><strong aria-hidden="true">2.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day2/exercises2.html"><strong aria-hidden="true">2.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_3.html"><strong aria-hidden="true">3.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day3/exercises1.html"><strong aria-hidden="true">3.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day3/exercises2.html"><strong aria-hidden="true">3.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_4.html"><strong aria-hidden="true">4.</strong> Day 4</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="winapi/init.html">Windows API</a></li><li class="chapter-item expanded "><a href="winapi/1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="rust/init.html"><strong aria-hidden="true">2.</strong> 🦀 Rust</a></li><li class="chapter-item expanded "><a href="rust/day_1.html"><strong aria-hidden="true">3.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day1/1.html"><strong aria-hidden="true">3.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="rust/day1/2.html"><strong aria-hidden="true">3.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_2.html"><strong aria-hidden="true">4.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day2/exercises1.html"><strong aria-hidden="true">4.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day2/exercises2.html"><strong aria-hidden="true">4.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_3.html"><strong aria-hidden="true">5.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day3/exercises1.html"><strong aria-hidden="true">5.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day3/exercises2.html"><strong aria-hidden="true">5.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_4.html"><strong aria-hidden="true">6.</strong> Day 4</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="aws/network/init.html">AWS</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,12 +147,79 @@
                     <main>
                         <h1 id="windows-notebook"><a class="header" href="#windows-notebook">Windows notebook</a></h1>
 <p>Notes from Windows Internal 7th Edition and general debugging rules</p>
-<h3 id="support-related-material"><a class="header" href="#support-related-material">Support related material</a></h3>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="aws"><a class="header" href="#aws">AWS</a></h2>
+<p><a href="winapi/./1.html">Chapter 1</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="windows-introduction"><a class="header" href="#windows-introduction">Windows Introduction</a></h1>
+<p>Introductory chapter about MS Windows OS concepts and terms used in the book. Intro of the Windows 
+<a href="http://www.microsoft.com/technet/sysinternals">sysinternals</a>. Summary of Windows Driver Kit (WDK),
+Windows Software Development Kit (SDK).</p>
+<h2 id="versions"><a class="header" href="#versions">Versions</a></h2>
+<p>Accordingly the <a href="https://learn.microsoft.com/en-us/windows-server/get-started/windows-server-release-info">MS site</a> 
+the following versions are available as server Windows options.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: right">Windows Server Release</th><th style="text-align: right">Servicing options</th><th style="text-align: right">Availability</th></tr></thead><tbody>
+<tr><td style="text-align: right">Windows Server 2022</td><td style="text-align: right">LTSC</td><td style="text-align: right">2021-08-18</td></tr>
+<tr><td style="text-align: right">Windows Server 2019</td><td style="text-align: right">LTSC</td><td style="text-align: right">2018-11-13</td></tr>
+<tr><td style="text-align: right">Windows Server 2016</td><td style="text-align: right">LTSC</td><td style="text-align: right">2016-10-15</td></tr>
+</tbody></table>
+</div>
+<h2 id="windows-api"><a class="header" href="#windows-api">Windows API</a></h2>
+<p>Ms core set of application programming interfaces available in MS OSs. 
+Several implementations that are often referred to by their own names (win32 api)
+Almost all Windows programs interact with the Windows API. Developer support
+is implemented in a form a software development kit, or MS SDK. WinAPI mostly
+focus on C. kernel32.dll is a core DLL exposing to applications most of the Win32 base API, such as memory mngmt,
+input/output, process and thread creation, (linux equivalent = libc).</p>
+<p>winRT or Windows Runtime is built on top of COM, adding various extensions to the base infrastructure
+.NET fw is part of Windows, uses the CLR (common lang runtime) and FCL for user development support.
+A few contexts for libraries and services:</p>
+<ul>
+<li>Windows API functions</li>
+<li>Native System Services (system calls)</li>
+<li>Kernel support functions (or routines)</li>
+<li>Windows Services</li>
+<li>Dynamic Link Libraries</li>
+</ul>
+<h2 id="processes"><a class="header" href="#processes">Processes</a></h2>
+<p>Program vs. Process with the following differences: Process has a private vritual adress space, 
+an executable program, a list of open handlers, a security context, a processs ID and at least
+one thread.</p>
+<p><img src="winapi/./images/proc.png" alt="screenshot of process" /></p>
+<p>Jobs- Windows provides an extension of the process model called jobs, a job object main functions is to
+allow the management and manipulations of a group of processes as a unit.</p>
+<h2 id="virtual-memory"><a class="header" href="#virtual-memory">Virtual Memory</a></h2>
+<p>Implements a virtual mem system based on flat address space, provides each process with illusion of having its
+large address space. Translates and maps the virtual address into physical addr where the data is actually stored.
+paging data to disk frees physical memory so that it can be used for other processes or for the OS itself.
+When a thread accesses a vritual address that has been paged to disk, VMem manager loads the info back into memory from disk.</p>
+<p>Address Windowing Extensions (AWE) allows 32-bit apps allocate up to 64Gb of physical memory.
+64-bit windows provides 128 TB.</p>
+<h2 id="kernel-mode-vs-user-mode"><a class="header" href="#kernel-mode-vs-user-mode">Kernel mode vs. user mode</a></h2>
+<p>running processes in different modes (ring levels), providing the Os kernel with higher privileges level
+than user model apps have, the processor provides a necessary foundation for OS designers to ensure 
+misbehaving apps don't disrupt the system. User apps switch from user to kernel mode when they make a system
+service call.</p>
+<p><img src="winapi/./images/netproc.png" alt="screenshot of process" /></p>
+<p>Windows provides DAC, Privileged access control and mandatory integrity control </p>
+<h2 id="kernel-debugging"><a class="header" href="#kernel-debugging">Kernel debugging</a></h2>
+<p>Examining internal kernel data structures and steping through functions in the kernel
+Useful way to investigate Windows int. Debugging tools:</p>
+<ol>
+<li>cdb</li>
+<li>kd</li>
+<li>WinDBc</li>
+<li>User-mode debuggers</li>
+<li>Kernel-mode debuggers</li>
+</ol>
+<p>Install the SDK with the following command</p>
+<pre><code>Invoke-WebRequest -URI &quot;https://go.microsoft.com/fwlink/p/?linkid=2196241&quot; -Out sdk.exe
+sdk.exe
+</code></pre>
+<p>To force a crash you can run <code>notMyfault.exe /crash</code></p>
+<p>If KD or WinDbg is performing kernel-mode debugging, it can force a system crash to occur. This is done by entering the .crash (Force System Crash) command at the command prompt. (If the target computer does not crash immediately, follow this with the g (Go) command.)</p>
+<p><img src="winapi/./images/kernel.png" alt="screenshot of mem" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-rust-annotations"><a class="header" href="#-rust-annotations">🦀 Rust annotations</a></h1>
 <p>This document is following the days and research mainly from the <a href="https://google.github.io/comprehensive-rust/">Comprehensive Rust</a> book.
 The tutorial consist of 4 days passing in different topics of the language</p>
-<h3 id="support-related-material-1"><a class="header" href="#support-related-material-1">Support related material</a></h3>
+<h3 id="support-related-material"><a class="header" href="#support-related-material">Support related material</a></h3>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/">OS Rust book</a></li>
 <li><a href="http://shop.oreilly.com/product/0636920040385.do">Programming Rust v2</a></li>
@@ -1310,6 +1377,7 @@ fn main() {
     handles.into_iter().for_each(|h| h.join().unwrap());
     println!(&quot;v: {v:?}&quot;);
 }</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="aws"><a class="header" href="#aws">AWS</a></h2>
 
                     </main>
 
