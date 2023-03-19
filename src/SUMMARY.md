@@ -1,6 +1,6 @@
 # Summary
 
-[Gate](./init.md)
+[Windows API](./winapi/init.md)
 
 [AWS](./aws/network/init.md)
 -
