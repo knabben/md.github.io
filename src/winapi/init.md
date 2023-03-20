@@ -116,6 +116,14 @@ Download the project into the netshoot and run
 
 ```
 echo "GET http://whoami-windows/" | vegeta attack -duration=300s -rate=1000 | vegeta report --type=text
+
+Requests      [total, rate, throughput]         300000, 1000.00, 960.94
+Duration      [total, attack, wait]             5m5s, 5m0s, 5.226s
+Latencies     [min, mean, 50, 90, 95, 99, max]  721.294µs, 900.551ms, 249.588ms, 1.852s, 3.034s, 16.473s, 30.034s
+Bytes In      [total, mean]                     671557936, 2238.53
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           97.77%
+Status Codes  [code:count]                      0:6697  200:293303
 ```
 
 ## References 
