@@ -148,6 +148,103 @@
                         <h1 id="windows-notebook"><a class="header" href="#windows-notebook">Windows notebook</a></h1>
 <p>Notes from Windows Internal 7th Edition and general debugging rules</p>
 <p><a href="winapi/./1.html">Chapter 1</a></p>
+<h2 id="lab-env"><a class="header" href="#lab-env">Lab Env</a></h2>
+<h3 id="windows-container-webserver"><a class="header" href="#windows-container-webserver">Windows container webserver</a></h3>
+<p>Simpler containers are available to provide a webservice for validation, the first
+is a <code>whoami</code> provides a predefined content with some information about the connection:</p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami-windows
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami-windows
+  template:
+    metadata:
+      labels:
+        app: whoami-windows
+    spec:
+      containers:
+      - image: stefanscherer/whoami:windows-amd64-2.0.1
+        name: whoami-windows
+      nodeSelector:
+        kubernetes.io/os: windows
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-windows
+  labels:
+    app: whoami-windows
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: whoami-windows
+</code></pre>
+<p>The second is agnhost, on HTTP handler mode offering a fake server on port 80.</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: test-agnhost
+  labels:
+    name: agnhost
+spec:
+  containers:
+  - args:
+    - test-webserver
+    image: registry.k8s.io/e2e-test-images/agnhost:2.43
+    name: agnhost
+  dnsConfig:
+    nameservers:
+    - 1.1.1.1
+    searches:
+    - resolv.conf.local
+  dnsPolicy: None
+  nodeSelector:
+    kubernetes.io/os: windows
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agnhost
+  labels:
+    name: agnhost
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: agnhost
+
+</code></pre>
+<p>For the client the netshoot container can run from a Linux and have all the required
+tools for networking testing and debugging:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: netshoot
+  name: netshoot
+spec:
+  containers:
+  - command:
+    - sleep
+    - &quot;360000&quot;
+    image: nicolaka/netshoot:latest
+    name: netshoot
+  nodeSelector:
+    kubernetes.io/os: linux
+</code></pre>
+<p>Enter the netshoot pod with: <code>kubectl exec -it netshoot -- zsh</code></p>
+<h2 id="performance-testing"><a class="header" href="#performance-testing">Performance testing</a></h2>
+<p>Vegeta is another project capable to provide load testing with tunning parameters
+Download the project into the netshoot and run</p>
+<pre><code>echo &quot;GET http://whoami-windows/&quot; | vegeta attack -duration=300s -rate=1000 | vegeta report --type=text
+</code></pre>
 <h2 id="references"><a class="header" href="#references">References</a></h2>
 <p><a href="https://gist.github.com/knabben/2482cb672aeb3fbfe32d14fe3cbd70a0">Debugger tools PS1</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="windows-introduction"><a class="header" href="#windows-introduction">Windows Introduction</a></h1>
