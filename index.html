@@ -149,6 +149,9 @@
 <p><a href="./1.html">Chapter 1</a></p>
 <p>A <a href="./perf/init.html">lab</a> can be find on perf folder, those are Kubernetes services cookbooks 
 for Windows clusters, the practical.</p>
+<h2 id="changing-containerd-service"><a class="header" href="#changing-containerd-service">Changing containerd service</a></h2>
+<pre><code class="language-shell">sc.exe config containerd binPath=&quot;c:\Program Files\containerd\containerd.exe --run-service --log-file=c:\tmp\containerd.log&quot;
+</code></pre>
 <h2 id="references"><a class="header" href="#references">References</a></h2>
 <p><a href="https://gist.github.com/knabben/2482cb672aeb3fbfe32d14fe3cbd70a0">Debugger tools PS1</a></p>
 
