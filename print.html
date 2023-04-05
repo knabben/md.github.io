@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="winapi/init.html">Windows API</a></li><li class="chapter-item expanded "><a href="winapi/1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="rust/init.html"><strong aria-hidden="true">2.</strong> 🦀 Rust</a></li><li class="chapter-item expanded "><a href="rust/day_1.html"><strong aria-hidden="true">3.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day1/1.html"><strong aria-hidden="true">3.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="rust/day1/2.html"><strong aria-hidden="true">3.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_2.html"><strong aria-hidden="true">4.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day2/exercises1.html"><strong aria-hidden="true">4.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day2/exercises2.html"><strong aria-hidden="true">4.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_3.html"><strong aria-hidden="true">5.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day3/exercises1.html"><strong aria-hidden="true">5.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day3/exercises2.html"><strong aria-hidden="true">5.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_4.html"><strong aria-hidden="true">6.</strong> Day 4</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="aws/network/init.html">AWS</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="winapi/init.html">Windows API</a></li><li class="chapter-item expanded "><a href="winapi/1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="winapi/perf/init.html"><strong aria-hidden="true">2.</strong> Perf</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="rust/init.html"><strong aria-hidden="true">3.</strong> 🦀 Rust</a></li><li class="chapter-item expanded "><a href="rust/day_1.html"><strong aria-hidden="true">4.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day1/1.html"><strong aria-hidden="true">4.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="rust/day1/2.html"><strong aria-hidden="true">4.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_2.html"><strong aria-hidden="true">5.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day2/exercises1.html"><strong aria-hidden="true">5.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day2/exercises2.html"><strong aria-hidden="true">5.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_3.html"><strong aria-hidden="true">6.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust/day3/exercises1.html"><strong aria-hidden="true">6.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="rust/day3/exercises2.html"><strong aria-hidden="true">6.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="rust/day_4.html"><strong aria-hidden="true">7.</strong> Day 4</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="aws/network/init.html">AWS</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,10 +148,10 @@
                         <h1 id="windows-notebook"><a class="header" href="#windows-notebook">Windows notebook</a></h1>
 <p>Notes from Windows Internal 7th Edition and general debugging rules</p>
 <p><a href="winapi/./1.html">Chapter 1</a></p>
-<p>A <a href="winapi/./perf/init.html">lab</a> can be find on perf folder, those are Kubernetes services cookbooks 
-for Windows clusters, the practical.</p>
 <h2 id="changing-containerd-service"><a class="header" href="#changing-containerd-service">Changing containerd service</a></h2>
-<pre><code class="language-shell">sc.exe config containerd binPath=&quot;c:\Program Files\containerd\containerd.exe --run-service --log-file=c:\tmp\containerd.log&quot;
+<pre><code class="language-shell">sc.exe config containerd \
+  binPath=&quot;c:\Program Files\containerd\containerd.exe \
+  --run-service --log-file=c:\tmp\containerd.log&quot;
 </code></pre>
 <h2 id="references"><a class="header" href="#references">References</a></h2>
 <p><a href="https://gist.github.com/knabben/2482cb672aeb3fbfe32d14fe3cbd70a0">Debugger tools PS1</a></p>
@@ -223,6 +223,113 @@ sdk.exe
 <p>To force a crash you can run <code>notMyfault.exe /crash</code></p>
 <p>If KD or WinDbg is performing kernel-mode debugging, it can force a system crash to occur. This is done by entering the .crash (Force System Crash) command at the command prompt. (If the target computer does not crash immediately, follow this with the g (Go) command.)</p>
 <p><img src="winapi/./images/kernel.png" alt="screenshot of mem" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="kubernetes-services-on-windows"><a class="header" href="#kubernetes-services-on-windows">Kubernetes Services on Windows</a></h1>
+<h3 id="windows-container-webserver"><a class="header" href="#windows-container-webserver">Windows container Webserver</a></h3>
+<p>Simpler containers are available to provide a webservice for validation, the first
+is a <code>whoami</code> provides a predefined content with some information about the connection:</p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami-windows
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami-windows
+  template:
+    metadata:
+      labels:
+        app: whoami-windows
+    spec:
+      containers:
+      - image: stefanscherer/whoami:windows-amd64-2.0.1
+        name: whoami-windows
+      nodeSelector:
+        kubernetes.io/os: windows
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-windows
+  labels:
+    app: whoami-windows
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: whoami-windows
+</code></pre>
+<p>The second is agnhost, on HTTP handler mode offering a fake server on port 80.</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: test-agnhost
+  labels:
+    name: agnhost
+spec:
+  containers:
+  - args:
+    - test-webserver
+    image: registry.k8s.io/e2e-test-images/agnhost:2.43
+    name: agnhost
+  dnsConfig:
+    nameservers:
+    - 1.1.1.1
+    searches:
+    - resolv.conf.local
+  dnsPolicy: None
+  nodeSelector:
+    kubernetes.io/os: windows
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agnhost
+  labels:
+    name: agnhost
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: agnhost
+
+</code></pre>
+<p>For the client the netshoot container can run from a Linux and have all the required
+tools for networking testing and debugging:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: netshoot
+  name: netshoot
+spec:
+  containers:
+  - command:
+    - sleep
+    - &quot;360000&quot;
+    image: nicolaka/netshoot:latest
+    name: netshoot
+  nodeSelector:
+    kubernetes.io/os: linux
+</code></pre>
+<p>Enter the netshoot pod with: <code>kubectl exec -it netshoot -- zsh</code></p>
+<h2 id="performance-testing-for-webserver"><a class="header" href="#performance-testing-for-webserver">Performance testing for webserver</a></h2>
+<p>Vegeta is another project capable to provide load testing with tunning parameters
+Download the project into the netshoot and run</p>
+<pre><code>echo &quot;GET http://whoami-windows/&quot; | vegeta attack -duration=300s -rate=1000 | vegeta report --type=text
+
+Requests      [total, rate, throughput]         300000, 1000.00, 960.94
+Duration      [total, attack, wait]             5m5s, 5m0s, 5.226s
+Latencies     [min, mean, 50, 90, 95, 99, max]  721.294µs, 900.551ms, 249.588ms, 1.852s, 3.034s, 16.473s, 30.034s
+Bytes In      [total, mean]                     671557936, 2238.53
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           97.77%
+Status Codes  [code:count]                      0:6697  200:293303
+</code></pre>
+<h2 id="database-connection-testing"><a class="header" href="#database-connection-testing">Database connection testing</a></h2>
+<p>C# and MSSQL server app validation</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-rust-annotations"><a class="header" href="#-rust-annotations">🦀 Rust annotations</a></h1>
 <p>This document is following the days and research mainly from the <a href="https://google.github.io/comprehensive-rust/">Comprehensive Rust</a> book.
 The tutorial consist of 4 days passing in different topics of the language</p>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Exercises part II - the ancient grimoire</title>
+        <title>Perf - the ancient grimoire</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../winapi/init.html">Windows API</a></li><li class="chapter-item expanded "><a href="../../winapi/1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../winapi/perf/init.html"><strong aria-hidden="true">2.</strong> Perf</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../../rust/init.html"><strong aria-hidden="true">3.</strong> 🦀 Rust</a></li><li class="chapter-item expanded "><a href="../../rust/day_1.html"><strong aria-hidden="true">4.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../rust/day1/1.html"><strong aria-hidden="true">4.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../../rust/day1/2.html"><strong aria-hidden="true">4.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../../rust/day_2.html"><strong aria-hidden="true">5.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../rust/day2/exercises1.html"><strong aria-hidden="true">5.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../../rust/day2/exercises2.html" class="active"><strong aria-hidden="true">5.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../../rust/day_3.html"><strong aria-hidden="true">6.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../rust/day3/exercises1.html"><strong aria-hidden="true">6.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../../rust/day3/exercises2.html"><strong aria-hidden="true">6.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../../rust/day_4.html"><strong aria-hidden="true">7.</strong> Day 4</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../../aws/network/init.html">AWS</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../winapi/init.html">Windows API</a></li><li class="chapter-item expanded "><a href="../../winapi/1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../winapi/perf/init.html" class="active"><strong aria-hidden="true">2.</strong> Perf</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../../rust/init.html"><strong aria-hidden="true">3.</strong> 🦀 Rust</a></li><li class="chapter-item expanded "><a href="../../rust/day_1.html"><strong aria-hidden="true">4.</strong> Day 1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../rust/day1/1.html"><strong aria-hidden="true">4.1.</strong> Beginning it</a></li><li class="chapter-item expanded "><a href="../../rust/day1/2.html"><strong aria-hidden="true">4.2.</strong> Variables lifecycle</a></li></ol></li><li class="chapter-item expanded "><a href="../../rust/day_2.html"><strong aria-hidden="true">5.</strong> Day 2</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../rust/day2/exercises1.html"><strong aria-hidden="true">5.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../../rust/day2/exercises2.html"><strong aria-hidden="true">5.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../../rust/day_3.html"><strong aria-hidden="true">6.</strong> Day 3</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../rust/day3/exercises1.html"><strong aria-hidden="true">6.1.</strong> Exercises part I</a></li><li class="chapter-item expanded "><a href="../../rust/day3/exercises2.html"><strong aria-hidden="true">6.2.</strong> Exercises part II</a></li></ol></li><li class="chapter-item expanded "><a href="../../rust/day_4.html"><strong aria-hidden="true">7.</strong> Day 4</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../../aws/network/init.html">AWS</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,142 +144,123 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="exercises-day-2---part-ii"><a class="header" href="#exercises-day-2---part-ii">Exercises Day 2 - Part II</a></h2>
-<ul>
-<li>luhn algorithm </li>
-</ul>
-<pre><pre class="playground"><code class="language-rust">pub fn luhn(cc_n: &amp;str) -&gt; bool {
-    let mut sum = 0;
-    let cc_number :String = cc_n.chars().filter(|c| !c.is_whitespace()).collect();
-    let length = cc_number.len();
-    let parity = length % 2;
+                        <h1 id="kubernetes-services-on-windows"><a class="header" href="#kubernetes-services-on-windows">Kubernetes Services on Windows</a></h1>
+<h3 id="windows-container-webserver"><a class="header" href="#windows-container-webserver">Windows container Webserver</a></h3>
+<p>Simpler containers are available to provide a webservice for validation, the first
+is a <code>whoami</code> provides a predefined content with some information about the connection:</p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami-windows
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami-windows
+  template:
+    metadata:
+      labels:
+        app: whoami-windows
+    spec:
+      containers:
+      - image: stefanscherer/whoami:windows-amd64-2.0.1
+        name: whoami-windows
+      nodeSelector:
+        kubernetes.io/os: windows
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-windows
+  labels:
+    app: whoami-windows
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: whoami-windows
+</code></pre>
+<p>The second is agnhost, on HTTP handler mode offering a fake server on port 80.</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: test-agnhost
+  labels:
+    name: agnhost
+spec:
+  containers:
+  - args:
+    - test-webserver
+    image: registry.k8s.io/e2e-test-images/agnhost:2.43
+    name: agnhost
+  dnsConfig:
+    nameservers:
+    - 1.1.1.1
+    searches:
+    - resolv.conf.local
+  dnsPolicy: None
+  nodeSelector:
+    kubernetes.io/os: windows
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agnhost
+  labels:
+    name: agnhost
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: agnhost
 
-    for (j, x) in cc_number.chars().enumerate() {
-        let cc = cc_number.chars().nth(j).unwrap().to_digit(10);
-        match cc {
-            None =&gt; {}
-            Some(mut n) =&gt; {
-                if j % 2 == 0 {
-                    n *= 2;
-                    if n &gt; 9 {
-                        n -= 9;
-                    }
-                }
-                sum += n;
-            }
-        }
-    }
-    if sum == 0 {
-        false
-    } else {
-        println!(&quot;{} {}&quot;, sum % 10, sum);
-        sum % 10 == 0
-    }
-}
+</code></pre>
+<p>For the client the netshoot container can run from a Linux and have all the required
+tools for networking testing and debugging:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: netshoot
+  name: netshoot
+spec:
+  containers:
+  - command:
+    - sleep
+    - &quot;360000&quot;
+    image: nicolaka/netshoot:latest
+    name: netshoot
+  nodeSelector:
+    kubernetes.io/os: linux
+</code></pre>
+<p>Enter the netshoot pod with: <code>kubectl exec -it netshoot -- zsh</code></p>
+<h2 id="performance-testing-for-webserver"><a class="header" href="#performance-testing-for-webserver">Performance testing for webserver</a></h2>
+<p>Vegeta is another project capable to provide load testing with tunning parameters
+Download the project into the netshoot and run</p>
+<pre><code>echo &quot;GET http://whoami-windows/&quot; | vegeta attack -duration=300s -rate=1000 | vegeta report --type=text
 
-#[test]
-fn test_non_digit_cc_number() {
-    assert!(!luhn(&quot;foo&quot;));
-}
-
-#[test]
-fn test_empty_cc_number() {
-    assert!(!luhn(&quot;&quot;));
-    assert!(!luhn(&quot; &quot;));
-    assert!(!luhn(&quot;  &quot;));
-    assert!(!luhn(&quot;    &quot;));
-}
-
-#[test]
-fn test_single_digit_cc_number() {
-    assert!(!luhn(&quot;0&quot;));
-}
-
-#[test]
-fn test_two_digit_cc_number() {
-    assert!(luhn(&quot; 0 0 &quot;));
-}
-
-#[test]
-fn test_valid_cc_number() {
-    assert!(luhn(&quot;4263 9826 4026 9299&quot;));
-    assert!(luhn(&quot;4539 3195 0343 6467&quot;));
-    assert!(luhn(&quot;7992 7398 7121 1114&quot;));
-}
-
-#[test]
-fn test_invalid_cc_number() {
-    assert!(!luhn(&quot;4223 9826 4026 9299&quot;));
-    assert!(!luhn(&quot;4539 3195 0343 6476&quot;));
-    assert!(!luhn(&quot;8273 1232 7352 0569&quot;));
-}
-
-#[allow(dead_code)]
-fn main() {}</code></pre></pre>
-<ul>
-<li>Prefix matching </li>
-</ul>
-<pre><pre class="playground"><code class="language-rust">fn is_prefix_of(haystack :&amp;str, p :&amp;str) -&gt; bool {
-    haystack.as_bytes().starts_with(p.as_bytes())
-}
-
-pub fn prefix_matches(prefix: &amp;str, request_path: &amp;str) -&gt; bool {
-    for (i, ph) in prefix.split(&quot;/&quot;).enumerate() {
-        let p = request_path.split(&quot;/&quot;).nth(i);
-        match p {
-            Some(c) if ph== &quot;*&quot; =&gt; {},
-            Some(c) if c != ph =&gt; return false,
-            None =&gt; return false,
-            _ =&gt; {}
-        }
-    }
-    true
-}
-
-#[test]
-fn test_matches_without_wildcard() {
-    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers&quot;));
-    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers/abc-123&quot;));
-    assert!(prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishers/abc/books&quot;));
-
-    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/publishersBooks&quot;));
-    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1/parent/publishers&quot;));
-    assert!(!prefix_matches(&quot;/v1/publishers&quot;, &quot;/v1&quot;));
-}
-
-#[test]
-fn test_matches_with_wildcard() {
-    assert!(prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/foo/books&quot;
-    ));
-    assert!(prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/bar/books&quot;
-    ));
-    assert!(prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/foo/books/book1&quot;
-    ));
-
-    assert!(!prefix_matches(&quot;/v1/publishers/*/books&quot;, &quot;/v1/publishers&quot;));
-    assert!(!prefix_matches(
-        &quot;/v1/publishers/*/books&quot;,
-        &quot;/v1/publishers/foo/booksByAuthor&quot;
-    ));
-}
-
-fn main() {}</code></pre></pre>
+Requests      [total, rate, throughput]         300000, 1000.00, 960.94
+Duration      [total, attack, wait]             5m5s, 5m0s, 5.226s
+Latencies     [min, mean, 50, 90, 95, 99, max]  721.294µs, 900.551ms, 249.588ms, 1.852s, 3.034s, 16.473s, 30.034s
+Bytes In      [total, mean]                     671557936, 2238.53
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           97.77%
+Status Codes  [code:count]                      0:6697  200:293303
+</code></pre>
+<h2 id="database-connection-testing"><a class="header" href="#database-connection-testing">Database connection testing</a></h2>
+<p>C# and MSSQL server app validation</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../rust/day2/exercises1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../winapi/1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../../rust/day_3.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../../rust/init.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -289,11 +270,11 @@ fn main() {}</code></pre></pre>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../rust/day2/exercises1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../winapi/1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../../rust/day_3.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../../rust/init.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
