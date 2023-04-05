@@ -2,7 +2,7 @@
 
 [Windows API](./winapi/init.md)
 - [Chapter 1](./winapi/1.md)
-
+- [Perf](./winapi/perf/init.md) 
 ---
 
 ### Rust
