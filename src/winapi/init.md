@@ -8,6 +8,12 @@ A [lab](./perf/init.md) can be find on perf folder, those are Kubernetes service
 for Windows clusters, the practical.
 
 
+## Changing containerd service
+
+```shell
+sc.exe config containerd binPath="c:\Program Files\containerd\containerd.exe --run-service --log-file=c:\tmp\containerd.log"
+```
+
 ## References 
 
 [Debugger tools PS1](https://gist.github.com/knabben/2482cb672aeb3fbfe32d14fe3cbd70a0)
